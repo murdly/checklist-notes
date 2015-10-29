@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF212121</color>
+    <color name="colorPrimaryDark">#FF000000</color>
+    <color name="colorAccent">#FF80CBC4</color>
+    <color name="colorBackground">#FF303030</color>
+    <color name="colorForeground">#FFFFFFFF</color>
+    <color name="navigationBarColor">#FF000000</color>
+    <color name="statusBarColor">#FF000000</color>
+    <color name="textColorPrimary">#FFFFFFFF</color>
+    <color name="textColorSecondary">#B3FFFFFF</color>
+    <color name="textColorPrimaryInverse">#DE000000</color>
+    <color name="textColorSecondaryInverse">#8A000000</color>
+
+</resources>
