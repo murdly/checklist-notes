@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.arkadiuszkarbowy.tasklog.data.TaskNote;
+import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.data.TasksDataSource;
 
 import java.util.ArrayList;
@@ -60,12 +60,12 @@ public class TabFragment extends Fragment {
 
         createMockups();
 
-        List<TaskNote> data = createItemList();
+        List<Note> data = createItemList();
         if (data.isEmpty()) showEmptyView();
         else setupRecyclerView(data);
     }
 
-    private void setupRecyclerView(List<TaskNote> data) {
+    private void setupRecyclerView(List<Note> data) {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerAdapter recyclerAdapter = new RecyclerAdapter(data);
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(GRID_COLUMNS, StaggeredGridLayoutManager
@@ -78,14 +78,15 @@ public class TabFragment extends Fragment {
         mEmptyView.setVisibility(View.VISIBLE);
     }
 
-    private List<TaskNote> createItemList() {
+    private List<Note> createItemList() {
         ds.open();
-        List<TaskNote> itemList = new ArrayList<>();
+        List<Note> itemList = new ArrayList<>();
         Bundle bundle = getArguments();
         if (bundle != null) {
             int type = bundle.getInt(TAB_TYPE_KEY);
-            if(type == TAB_TODO)
-                itemList = ds.getTodoTasks();
+//            itemList = ds.getAllNotes();
+            if (type == TAB_TODO)
+                itemList = ds.getTodoNotes();
             else
                 itemList = ds.getDoneTasks();
         }
@@ -99,15 +100,16 @@ public class TabFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    private void createMockups(){
+    private void createMockups() {
         ds.open();
-        ds.createSimpleTask(new Date(34534535), new Date(345342535), "1notatka");
-        ds.createSimpleTask(new Date(34534535), new Date(345342535), "2asdasd");
-        ds.createSimpleTask(new Date(34534535), new Date(345342535), "2notasdatka");
-        ds.createSimpleTask(new Date(34534535), new Date(345342535), "3nxcvvotatka");
-        ds.createSimpleTask(new Date(34534535), new Date(345342535), "4notatcccka");
-        ds.createSimpleTask(new Date(34534535), new Date(345342535), "4notatcccka");
-        ds.createSimpleTask(new Date(34534535), new Date(345342535), "4notatcccka");
+        ArrayList<String> tasks = new ArrayList<>();
+        tasks.add("zadanie1");
+        ds.createNote(new Date(34534535), new Date(345342535), tasks);
+
+        ArrayList<String> tasks2 = new ArrayList<>();
+        tasks2.add("zadanie2");
+        tasks2.add("zadanie3");
+        ds.createNote(new Date(34453535), new Date(344534255), tasks2);
         ds.close();
     }
 }

@@ -10,28 +10,41 @@ import android.util.Log;
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
 
-    public static final String TABLE_TASKS = "tasks";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_LISTID = "groupid";
-    public static final String COLUMN_ISDONE= "isdone";
+    public static final String TABLE_NOTES = "notes";
+    public static final String COLUMN_ID_NOTE = "_id";
+    public static final String COLUMN_TYPE = "type";  //todoo, done
     public static final String COLUMN_DEADLINE = "deadline";
     public static final String COLUMN_REMINDER = "reminder";
-    public static final String COLUMN_TEXT = "text";
 
-    public static String[] allColumns = { COLUMN_ID, COLUMN_LISTID, COLUMN_ISDONE, COLUMN_DEADLINE,
-            COLUMN_REMINDER, COLUMN_TEXT };
+    public static final String TABLE_TASKS = "tasks";
+    public static final String COLUMN_ID_TASK = "_id";
+    public static final String COLUMN_FRID_NOTE = "fidNote";
+    public static final String COLUMN_TEXT = "text";
+    public static final String COLUMN_ISDONE= "isdone";
+
+
+    public static String[] allColumnsNotes = { COLUMN_ID_NOTE, COLUMN_TYPE, COLUMN_DEADLINE,
+            COLUMN_REMINDER};
+
+    public static String[] allColumnsTasks = { COLUMN_ID_TASK, COLUMN_FRID_NOTE, COLUMN_TEXT, COLUMN_ISDONE };
 
     private static final String DATABASE_NAME = "tasknotes.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
 
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_TASKS + "(" +
-            COLUMN_ID + " integer primary key autoincrement, " +
-            COLUMN_LISTID + " integer, " +
-            COLUMN_ISDONE + " integer, " +
+    private static final String CREATE_TABLE_NOTES = "create table "
+            + TABLE_NOTES + "(" +
+            COLUMN_ID_NOTE + " integer primary key autoincrement, " +
+            COLUMN_TYPE + " text, " +
             COLUMN_DEADLINE + " integer, " +
-            COLUMN_REMINDER + " integer, " +
-            COLUMN_TEXT + " text not null);";
+            COLUMN_REMINDER + " integer);";
+
+    private static final String CREATE_TABLE_TASKS = "create table "
+            + TABLE_TASKS + "(" +
+            COLUMN_ID_TASK + " integer primary key autoincrement, " +
+            COLUMN_TEXT + " text not null, " +
+            COLUMN_ISDONE + " integer, " +
+            COLUMN_FRID_NOTE + " integer," +
+            " FOREIGN KEY ("+COLUMN_FRID_NOTE+") REFERENCES "+TABLE_TASKS+"("+COLUMN_ID_NOTE+"));";
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,7 +52,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(DATABASE_CREATE);
+        database.execSQL(CREATE_TABLE_NOTES);
+        database.execSQL(CREATE_TABLE_TASKS);
     }
 
     @Override
@@ -48,7 +62,24 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
         onCreate(db);
     }
 
 }
+/*
+        _idNote....type.......Deadline.......reminder.....
+        0            0          3453534/-1     4564336/-1
+        1             1         3453534         4564336
+        2             1         3453534         4564336
+        3             0       3453534/-1     4564336/-1
+        */
+
+/* notes
+        idTask...fNote.......text..........isDOne
+        1          1         sdsdds.........1
+        2           1        dosdsdsdne......0
+        3           2        dosdsdsdne.....1
+
+
+ */

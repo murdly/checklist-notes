@@ -12,6 +12,7 @@
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
         <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
+        <item name="colorControlNormal">@color/colorBackground</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
