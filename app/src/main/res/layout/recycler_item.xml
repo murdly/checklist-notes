@@ -20,17 +20,22 @@
             android:src="@drawable/ic_cancel"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
+            android:background="@android:color/transparent"
             android:layout_marginTop="8dp"/>
 
-        <ListView
+        <com.example.arkadiuszkarbowy.tasklog.ExpandedListView
             android:id="@+id/list"
+            android:layout_below="@id/cancel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_below="@id/list">
+            android:layout_below="@id/list"
+            android:background="@color/colorAccent">
 
 
         </LinearLayout>

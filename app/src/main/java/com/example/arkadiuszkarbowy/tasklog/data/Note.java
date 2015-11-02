@@ -3,6 +3,8 @@ package com.example.arkadiuszkarbowy.tasklog.data;
 import java.util.ArrayList;
 import java.util.Date;
 
+import it.gmariotti.cardslib.library.prototypes.CardWithList;
+
 /**
  * Created by arkadiuszkarbowy on 28/10/15.
  */

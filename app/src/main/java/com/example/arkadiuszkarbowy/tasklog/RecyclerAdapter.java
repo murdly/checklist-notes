@@ -1,16 +1,21 @@
 package com.example.arkadiuszkarbowy.tasklog;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.data.Task;
-import com.example.arkadiuszkarbowy.tasklog.data.TaskNote;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -20,8 +25,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<Note> mNotes;
     private int mType;
+    private Context mContext;
 
-    public RecyclerAdapter(List<Note> itemList) {
+    public RecyclerAdapter(Context context, List<Note> itemList) {
+        mContext = context;
         mNotes = itemList;
     }
 
@@ -38,8 +45,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //            return new SimpleTaskViewHolder(v);
 //        }
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item, parent, false);
-        return new ListTaskViewHolder(v);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+        return new NoteViewHolder(v);
     }
 
     @Override
@@ -47,7 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //        if (mType == TaskNote.SIMPLE_TASK_ITEM)
 //            onBindSimpleTaskViewHolder((SimpleTaskViewHolder) viewHolder, position);
 //        else if (mType == TaskNote.LIST_TASK_ITEM)
-            onBindListTaskViewHolder((ListTaskViewHolder) viewHolder, position);
+        onBindListTaskViewHolder((NoteViewHolder) viewHolder, position);
     }
 
 //    private void onBindSimpleTaskViewHolder(SimpleTaskViewHolder holder, int position) {
@@ -55,11 +62,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //        holder.mSimpleText.setText(note.getTaskContent());
 //    }
 
-    private void onBindListTaskViewHolder(ListTaskViewHolder holder, int position) {
+    private void onBindListTaskViewHolder(NoteViewHolder holder, int position) {
         Note note = mNotes.get(position);
-        for(Task task : note.getTasks()){
-            holder.listText.setText(task.getText());
-        }
+//        for(Task task : note.getTasks()){
+//            holder.listText.setText(task.getText());
+//        }
+        holder.setTasks(mContext, note.getTasks());
+
+
     }
 
     @Override
@@ -68,25 +78,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    public static class SimpleTaskViewHolder extends RecyclerView.ViewHolder {
+    public static class NoteViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.simpleText)
-        TextView mSimpleText;
+        @Bind(R.id.list)
+        ExpandedListView list;
 
-        public SimpleTaskViewHolder(final View view) {
+        public NoteViewHolder(final View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
-    }
 
-    public static class ListTaskViewHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.listText)
-        CheckedTextView listText;
-
-        public ListTaskViewHolder(final View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+        public void setTasks(Context context, ArrayList<Task> tasks) {
+            list.setAdapter(new TaskListAdapter(context, R.layout.task_list_item, tasks));
         }
     }
 }

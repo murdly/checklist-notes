@@ -58,7 +58,7 @@ public class TabFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         AndroidApplication.getComponent(getActivity()).inject(this);
 
-        createMockups();
+//        createMockups();
 
         List<Note> data = createItemList();
         if (data.isEmpty()) showEmptyView();
@@ -66,10 +66,11 @@ public class TabFragment extends Fragment {
     }
 
     private void setupRecyclerView(List<Note> data) {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(data);
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(GRID_COLUMNS, StaggeredGridLayoutManager
-                .VERTICAL));
+        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(getActivity(), data);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(GRID_COLUMNS, StaggeredGridLayoutManager
+                .VERTICAL);
+//        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
     }
 
@@ -84,7 +85,6 @@ public class TabFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             int type = bundle.getInt(TAB_TYPE_KEY);
-//            itemList = ds.getAllNotes();
             if (type == TAB_TODO)
                 itemList = ds.getTodoNotes();
             else
@@ -103,13 +103,18 @@ public class TabFragment extends Fragment {
     private void createMockups() {
         ds.open();
         ArrayList<String> tasks = new ArrayList<>();
-        tasks.add("zadanie1");
+        tasks.add("zadanie1sfsdfsdfsdfsdfsdfsdfs");
+        tasks.add("zadanie11");
         ds.createNote(new Date(34534535), new Date(345342535), tasks);
 
         ArrayList<String> tasks2 = new ArrayList<>();
-        tasks2.add("zadanie2");
         tasks2.add("zadanie3");
         ds.createNote(new Date(34453535), new Date(344534255), tasks2);
+
+        ArrayList<String> tasks3 = new ArrayList<>();
+        tasks3.add
+                ("zadanie4444444dfdsfsdfsdfsdfsdfsdfsdfsdfsdfsdfzadanie4444444dfdsfsdfsdfsdfsdfsdfsdfsdfsdfsdfzadanie4444444dfdsfsdfsdfsdfsdfsdfsdfsdfsdfsdf");
+        ds.createNote(new Date(34453535), new Date(344534255), tasks3);
         ds.close();
     }
 }
