@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="280dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp">
+
+
+    <com.example.arkadiuszkarbowy.tasklog.note.LimitedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.example.arkadiuszkarbowy.tasklog.note.TaskRowLinearLayout
+            android:id="@+id/taskList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.example.arkadiuszkarbowy.tasklog.note.Row
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.example.arkadiuszkarbowy.tasklog.note.TaskRowLinearLayout>
+
+    </com.example.arkadiuszkarbowy.tasklog.note.LimitedScrollView>
+
+    <TextView
+        android:id="@+id/nextRow"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/scrollView"
+        android:background="@android:color/transparent"
+        android:paddingStart="16dp"
+        android:text="@string/new_element"
+        android:textColor="@color/textColorSecondaryInverse"/>
+
+    <FrameLayout
+        android:id="@+id/deadlineAlarmContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="4dp"/>
+
+
+</RelativeLayout>

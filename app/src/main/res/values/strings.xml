@@ -4,4 +4,10 @@
     <string name="todo">Do zrobienia</string>
     <string name="done">Zrobione</string>
     <string name="empty">Brak zadań</string>
+    <string name="new_note">Nowa notatka</string>
+    <string name="new_element">Dodaj element</string>
+    <string name="alarm">Przypomnij</string>
+    <string name="deadline">Ustaw termin</string>
+    <string name="date">data</string>
+    <string name="time">godzina</string>
 </resources>

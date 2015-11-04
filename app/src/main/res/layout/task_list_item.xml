@@ -16,7 +16,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:textColor="@color/textColorSecondaryInverse"
-        android:padding="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
         style="@style/Base.TextAppearance.AppCompat.Body2"
         android:text="zadanie"/>
 </LinearLayout>

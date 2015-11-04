@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/deadlineLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+
+        <TextView
+            android:id="@+id/setDeadline"
+            style="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/deadline"
+            android:textColor="@color/textColorSecondaryInverse"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            android:id="@+id/dateTimeDeadlineLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/deadlineIc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_deadline"/>
+
+            <EditText
+                android:id="@+id/deadlineDate"
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:text="@string/date"
+                android:textColor="@color/textColorSecondaryInverse"/>
+
+            <EditText
+                android:id="@+id/deadlineTime"
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:text="@string/time"
+                android:textColor="@color/textColorSecondaryInverse"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/deadlineCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_cancel"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/alarmLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/setAlarm"
+            style="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/alarm"
+            android:textColor="@color/textColorSecondaryInverse"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            android:id="@+id/dateTimeAlarmLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/alarmIc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_alarm"/>
+
+            <EditText
+                android:id="@+id/alarmDate"
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:text="@string/date"
+                android:textColor="@color/textColorSecondaryInverse"/>
+
+            <EditText
+                android:id="@+id/alarmTime"
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:text="@string/time"
+                android:textColor="@color/textColorSecondaryInverse"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/alarmCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_cancel"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</LinearLayout>
