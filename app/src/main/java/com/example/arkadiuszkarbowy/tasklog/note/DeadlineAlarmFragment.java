@@ -91,7 +91,7 @@ public class DeadlineAlarmFragment extends Fragment {
         mDeadlineLayout.setVisibility(View.GONE);
         mSetDeadline.setVisibility(View.VISIBLE);
     }
-    
+
 //    @OnClick(R.id.alarmTime)
 //    void showAlarmCalendar() {
 //        new TimePickerFragment().newInstance(mAlarmListener).show(getFragmentManager(),
