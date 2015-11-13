@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,8 @@ public class Row extends LinearLayout {
     ImageView mDelete;
     @Bind(R.id.text)
     EditText text;
+    @Bind(R.id.checkBox)
+    CheckBox mCheckBox;
 
     public Row(Context context) {
         this(context, null);
@@ -38,8 +41,12 @@ public class Row extends LinearLayout {
         mgr.showSoftInput(text, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    private void init() {
+    public String getNoteText(){
+        return text.getText().toString();
+    }
 
+    public Boolean isNoteChecked(){
+        return mCheckBox.isChecked();
     }
 
     OnFocusChangeListener mOnFocusChangeListener = new OnFocusChangeListener() {

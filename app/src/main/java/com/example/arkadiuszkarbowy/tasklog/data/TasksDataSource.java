@@ -11,7 +11,9 @@ import com.example.arkadiuszkarbowy.tasklog.scopes.PerApp;
 import com.example.arkadiuszkarbowy.tasklog.util.Conversion;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,15 +42,45 @@ public class TasksDataSource {
         dbHelper.close();
     }
 
-    public Note createNote(Date deadline, Date reminder, ArrayList<String> text) {
+    public Note createNote(LinkedHashMap<String, Boolean> entries, Calendar mDeadlineCalendar,
+                           Calendar mAlarmCalendar) {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.COLUMN_TYPE, NOTE_TYPE_TODO);
-        values.put(SQLiteHelper.COLUMN_DEADLINE, Conversion.persistDate(deadline));
-        values.put(SQLiteHelper.COLUMN_REMINDER, Conversion.persistDate(reminder));
-        long insertId = database.insert(SQLiteHelper.TABLE_NOTES, null,
+        values.put(SQLiteHelper.COLUMN_DEADLINE, Conversion.persistDate(mDeadlineCalendar.getTime()));
+        values.put(SQLiteHelper.COLUMN_REMINDER, Conversion.persistDate(mAlarmCalendar.getTime()));
+        long noteId = database.insert(SQLiteHelper.TABLE_NOTES, null,
                 values);
 
-        ArrayList<Task> tasks = createTasksForNote(text, insertId);
+        ArrayList<Task> tasks = new ArrayList<>();
+        for (String text : entries.keySet()) {
+            Task task = new Task();
+            task.setIsDone(entries.get(text));
+            task.setText(text);
+            tasks.add(task);
+        }
+
+        createTasks(tasks, noteId);
+
+        Note note = new Note();
+        note.setId(noteId); //todo czyzby;d
+        note.setTasks(tasks);
+        note.setDeadline(mDeadlineCalendar.getTime());
+        note.setReminder(mAlarmCalendar.getTime());
+        note.setType(NOTE_TYPE_TODO); //todo sprawdzic checki
+
+        return note;
+    }
+
+
+    private void createTasks(ArrayList<Task> tasks, long noteId) {
+        for (Task task : tasks) {
+            ContentValues values = new ContentValues();
+            values.put(SQLiteHelper.COLUMN_FRID_NOTE, noteId);
+            values.put(SQLiteHelper.COLUMN_TEXT, task.getText());
+            values.put(SQLiteHelper.COLUMN_ISDONE, task.isDone() ? 1 : 0);
+            database.insert(SQLiteHelper.TABLE_TASKS, null, values);
+        }
+    }
 
 //        Cursor cursor = database.query(SQLiteHelper.TABLE_NOTES,
 //                SQLiteHelper.allColumnsNotes, SQLiteHelper.COLUMN_ID_NOTE + " = " + insertId, null,
@@ -57,27 +89,13 @@ public class TasksDataSource {
 //        Note newNote = cursorToNote(cursor);
 //        cursor.close();
 //        return newNote;
-        return null;
-    }
-
-    private ArrayList<Task> createTasksForNote(ArrayList<String> textTask, long insertId) {
-        for(String text: textTask) {
-            ContentValues values = new ContentValues();
-            values.put(SQLiteHelper.COLUMN_FRID_NOTE, insertId);
-            values.put(SQLiteHelper.COLUMN_TEXT, text);
-            values.put(SQLiteHelper.COLUMN_ISDONE, 0);
-            database.insert(SQLiteHelper.TABLE_TASKS, null, values);
-        }
-        return null;
-    }
-
 
     public List<Note> getTodoNotes() {
         Log.d("TaskDatSource", "getTodoNotes");
 
         String table = SQLiteHelper.TABLE_NOTES;
         String[] columns = SQLiteHelper.allColumnsNotes;
-        String where =  SQLiteHelper.COLUMN_TYPE + " = ?";
+        String where = SQLiteHelper.COLUMN_TYPE + " = ?";
         String[] args = {NOTE_TYPE_TODO};
 
         Cursor cursor = database.query(table, columns, where, args, null, null, null);
@@ -85,7 +103,7 @@ public class TasksDataSource {
         return cursorToNoteList(cursor);
     }
 
-    private List<Note> cursorToNoteList(Cursor cursor){
+    private List<Note> cursorToNoteList(Cursor cursor) {
         List<Note> notes = new ArrayList<Note>();
 
         cursor.moveToFirst();
@@ -127,7 +145,8 @@ public class TasksDataSource {
     private Task cursorToTask(Cursor cursor) {
         Task task = new Task();
         task.setId(cursor.getInt(cursor.getColumnIndex(SQLiteHelper.COLUMN_ID_TASK)));
-        task.setIsDone(cursor.getInt(cursor.getColumnIndex(SQLiteHelper.COLUMN_ISDONE)));
+        int isDone = cursor.getInt(cursor.getColumnIndex(SQLiteHelper.COLUMN_ISDONE));
+        task.setIsDone(isDone == 1);
         task.setText(cursor.getString(cursor.getColumnIndex(SQLiteHelper.COLUMN_TEXT)));
         return task;
     }
@@ -147,8 +166,6 @@ public class TasksDataSource {
 
         return new ArrayList<>();
     }
-
-
 
 
     //    public void deleteComment(TaskNote taskNote) {

@@ -2,18 +2,15 @@ package com.example.arkadiuszkarbowy.tasklog;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.data.Task;
+import com.example.arkadiuszkarbowy.tasklog.note.NoteDeletedEvent;
+import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +59,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //        holder.mSimpleText.setText(note.getTaskContent());
 //    }
 
-    private void onBindListTaskViewHolder(NoteViewHolder holder, int position) {
-        Note note = mNotes.get(position);
+    private void onBindListTaskViewHolder(NoteViewHolder holder, final int position) {
+        final int invertedPosition = getItemCount() - position - 1;
+       final Note note = mNotes.get(invertedPosition);
 //        for(Task task : note.getTasks()){
 //            holder.listText.setText(task.getText());
 //        }
         holder.setTasks(mContext, note.getTasks());
-
+        holder.mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BusProvider.getBus().post(new NoteDeletedEvent(note.getId(), invertedPosition));
+            }
+        });
 
     }
 
@@ -82,6 +85,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Bind(R.id.list)
         ExpandedListView list;
+        @Bind(R.id.deleteNote)
+        ImageView mDelete;
 
         public NoteViewHolder(final View view) {
             super(view);

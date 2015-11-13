@@ -10,7 +10,7 @@ import it.gmariotti.cardslib.library.prototypes.CardWithList;
  */
 public class Note {
     private long id;
-    private String type;
+    private String type; //todoo, done
     private Date deadline;
     private Date reminder;
     private ArrayList<Task> tasks;
@@ -25,7 +25,7 @@ public class Note {
 
     public String getType() {
         return type;
-    }
+    } // sprawdzic czy wszystkie odhaczone
 
     public void setType(String type) {
         this.type = type;

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,10 @@ import com.example.arkadiuszkarbowy.tasklog.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
+import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,11 +31,6 @@ import butterknife.OnClick;
  * Created by arkadiuszkarbowy on 04/11/15.
  */
 public class DeadlineAlarmFragment extends Fragment {
-
-    @Bind(R.id.alarmDate)
-    EditText mAlarmDate;
-    @Bind(R.id.alarmTime)
-    EditText mAlarmTime;
 
     @Bind(R.id.setDeadline)
     TextView mSetDeadline;
@@ -46,6 +42,20 @@ public class DeadlineAlarmFragment extends Fragment {
     EditText mDeadlineTime;
     @Bind(R.id.deadlineCancel)
     ImageView mDeadlineCancel;
+
+    @Bind(R.id.setAlarm)
+    TextView mSetAlarm;
+    @Bind(R.id.dateTimeAlarmLayout)
+    LinearLayout mAlarmLayout;
+    @Bind(R.id.alarmDate)
+    EditText mAlarmDate;
+    @Bind(R.id.alarmTime)
+    EditText mAlarmTime;
+    @Bind(R.id.alarmCancel)
+    ImageView mAlarmCancel;
+
+    @BindString(R.string.date) String mDate;
+    @BindString(R.string.time) String mTime;
 
     private Calendar mDeadlineCalendar, mAlarmCalendar;
     private SimpleDateFormat mDateFormat, mTimeFormat;
@@ -87,17 +97,43 @@ public class DeadlineAlarmFragment extends Fragment {
     @OnClick(R.id.deadlineCancel)
     void onDeadlineCancel() {
         mDeadlineCalendar.clear();
+        mDeadlineDate.setText(mDate);
+        mDeadlineTime.setText(mTime);
         mDeadlineCancel.setVisibility(View.GONE);
         mDeadlineLayout.setVisibility(View.GONE);
         mSetDeadline.setVisibility(View.VISIBLE);
     }
 
-//    @OnClick(R.id.alarmTime)
-//    void showAlarmCalendar() {
-//        new TimePickerFragment().newInstance(mAlarmListener).show(getFragmentManager(),
-//                "alarm");
-//
-//    }
+
+    @OnClick(R.id.setAlarm)
+    void onSetAlarm() {
+        mSetAlarm.setVisibility(View.GONE);
+        mAlarmLayout.setVisibility(View.VISIBLE);
+        mAlarmCancel.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.alarmDate)
+    void showAlarmCalendar() {
+        new DatePickerFragment().newInstance(mAlarmDateListener, mAlarmCalendar).show(getFragmentManager(),
+                "alarmdate");
+    }
+
+    @OnClick(R.id.alarmTime)
+    void showAlarmTimer() {
+        new TimePickerFragment().newInstance(mAlarmTimeListener, mDeadlineCalendar).show(getFragmentManager(),
+                "alarmtime");
+    }
+
+    @OnClick(R.id.alarmCancel)
+    void onAlarmCancel() {
+        mAlarmCalendar.clear();
+        mAlarmDate.setText(mDate);
+        mAlarmTime.setText(mTime);
+        mAlarmCancel.setVisibility(View.GONE);
+        mAlarmLayout.setVisibility(View.GONE);
+        mSetAlarm.setVisibility(View.VISIBLE);
+    }
+
 
     DatePickerDialog.OnDateSetListener mDeadlineDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -115,6 +151,31 @@ public class DeadlineAlarmFragment extends Fragment {
             mDeadlineTime.setText(mTimeFormat.format(mDeadlineCalendar.getTime()));
         }
     };
+
+    DatePickerDialog.OnDateSetListener mAlarmDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mAlarmCalendar.set(year, monthOfYear, dayOfMonth);
+            mAlarmDate.setText(mDateFormat.format(mAlarmCalendar.getTime()));
+        }
+    };
+
+    TimePickerDialog.OnTimeSetListener mAlarmTimeListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            mAlarmCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mAlarmCalendar.set(Calendar.MINUTE, minute);
+            mAlarmTime.setText(mTimeFormat.format(mAlarmCalendar.getTime()));
+        }
+    };
+
+    public Calendar getDeadlineCalendar(){
+        return mDeadlineCalendar;
+    }
+
+    public Calendar getAlarmCalendar(){
+        return mAlarmCalendar;
+    }
 
     @Override
     public void onDetach() {

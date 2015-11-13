@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.arkadiuszkarbowy.tasklog.scopes.PerApp;
+import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
 
@@ -17,12 +18,13 @@ import dagger.Provides;
 public class ApplicationModule {
     private final Application application;
 
-    public ApplicationModule(Application application){
+    public ApplicationModule(Application application) {
         this.application = application;
     }
 
-    @Provides @PerApp
-    Context privateApplicationContext(){
+    @Provides
+    @PerApp
+    Context provideApplicationContext() {
         return application.getApplicationContext();
     }
 }

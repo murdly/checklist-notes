@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.arkadiuszkarbowy.tasklog.data.DataModule;
+import com.example.arkadiuszkarbowy.tasklog.note.CreateNoteDialogActivity;
 import com.example.arkadiuszkarbowy.tasklog.scopes.PerApp;
+import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
 
@@ -20,7 +22,8 @@ import dagger.Component;
                 DataModule.class
         })
 public interface ApplicationComponent {
-    void inject(TabFragment activity);
+    void inject(TabFragment fragment);
+    void inject(CreateNoteDialogActivity activity);
 
 //    Application application();
     Context context();

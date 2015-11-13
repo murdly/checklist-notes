@@ -1,24 +1,16 @@
 package com.example.arkadiuszkarbowy.tasklog.note;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
+import com.example.arkadiuszkarbowy.tasklog.AndroidApplication;
 import com.example.arkadiuszkarbowy.tasklog.R;
+import com.example.arkadiuszkarbowy.tasklog.data.Note;
+import com.example.arkadiuszkarbowy.tasklog.data.TasksDataSource;
+import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,29 +24,34 @@ public class CreateNoteDialogActivity extends AppCompatActivity {
     TextView mNextRow;
     @Bind(R.id.taskList)
     TaskRowLinearLayout mTasksLayout;
+    @Inject
+    TasksDataSource ds;
 
-
-    private Calendar mDeadlineCalendar, mAlarmCalendar;
-    private SimpleDateFormat mDateFormat, mTimeFormat;
+    private DeadlineAlarmFragment mFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_dialog);
+        AndroidApplication.getComponent(this).inject(this);
         ButterKnife.bind(this);
-        mDeadlineCalendar = Calendar.getInstance();
-        mAlarmCalendar = Calendar.getInstance();
-        mDateFormat = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
-        mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-        getFragmentManager().beginTransaction().add(R.id.deadlineAlarmContainer, new DeadlineAlarmFragment
-                ()).commit();
-
+        mFragment = new DeadlineAlarmFragment();
+        getFragmentManager().beginTransaction().add(R.id.deadlineAlarmContainer, mFragment).commit();
     }
-
 
     @OnClick(R.id.nextRow)
     void next() {
         mTasksLayout.addRow();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ds.open();
+        Note note = ds.createNote(mTasksLayout.getEntries(), mFragment.getDeadlineCalendar(), mFragment
+                .getAlarmCalendar());
+        ds.close();
+
+        BusProvider.getBus().post(new NoteCreatedEvent(note));
     }
 }

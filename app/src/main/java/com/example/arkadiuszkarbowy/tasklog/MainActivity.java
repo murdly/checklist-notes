@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @BindString(R.string.todo) String mTodo;
     @BindString(R.string.done) String mDone;
 
-
+    private TabFragment mTodoFragment, mDoneFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                new CreateNoteDialog().newInstance().show(getFragmentManager(), "create");
                 Intent i = new Intent(MainActivity.this, CreateNoteDialogActivity.class);
                 startActivity(i);
             }
@@ -49,9 +48,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViewPagerAndTabs() {
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragment(TabFragment.createInstance(TabFragment.TAB_TODO), mTodo);
-        pagerAdapter.addFragment(TabFragment.createInstance(TabFragment.TAB_DONE), mDone);
+        mTodoFragment = TabFragment.createInstance(TabFragment.TAB_TODO);
+        pagerAdapter.addFragment(mTodoFragment, mTodo);
+        mDoneFragment = TabFragment.createInstance(TabFragment.TAB_DONE);
+        pagerAdapter.addFragment(mDoneFragment, mDone);
         mViewPager.setAdapter(pagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

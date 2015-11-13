@@ -3,7 +3,6 @@ package com.example.arkadiuszkarbowy.tasklog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -13,9 +12,12 @@ import android.widget.TextView;
 
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.data.TasksDataSource;
+import com.example.arkadiuszkarbowy.tasklog.note.NoteCreatedEvent;
+import com.example.arkadiuszkarbowy.tasklog.note.NoteDeletedEvent;
+import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,6 +38,8 @@ public class TabFragment extends Fragment {
     @Bind(R.id.emptyView)
     TextView mEmptyView;
 
+    private RecyclerAdapter mAdapter;
+    private List<Note> mData;
 
     public static TabFragment createInstance(int tabType) {
         TabFragment tabFragment = new TabFragment();
@@ -50,6 +54,7 @@ public class TabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
+
         return view;
     }
 
@@ -57,21 +62,20 @@ public class TabFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         AndroidApplication.getComponent(getActivity()).inject(this);
-
-//        createMockups();
-
-        List<Note> data = createItemList();
-        if (data.isEmpty()) showEmptyView();
-        else setupRecyclerView(data);
+        if (getArguments().getInt(TAB_TYPE_KEY) == TAB_TODO)
+            BusProvider.getBus().register(this);
+        mData = createItemList();
+        if (mData.isEmpty()) showEmptyView();
+        else setupRecyclerView();
     }
 
-    private void setupRecyclerView(List<Note> data) {
-        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(getActivity(), data);
+    private void setupRecyclerView() {
+        mAdapter = new RecyclerAdapter(getActivity(), mData);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(GRID_COLUMNS, StaggeredGridLayoutManager
                 .VERTICAL);
-//        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(recyclerAdapter);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void showEmptyView() {
@@ -94,27 +98,23 @@ public class TabFragment extends Fragment {
         return itemList;
     }
 
+    @Subscribe
+    public void noteInserted(NoteCreatedEvent event) {
+        mData.add(event.getNote());
+        mAdapter.notifyDataSetChanged();
+        mRecyclerView.scrollToPosition(0);
+    }
+
+    @Subscribe
+    public void noteDeleted(NoteDeletedEvent event){
+        mData.remove(event.position);
+        mAdapter.notifyDataSetChanged(); //todo do prezentaraaa
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
-
-    private void createMockups() {
-        ds.open();
-        ArrayList<String> tasks = new ArrayList<>();
-        tasks.add("zadanie1sfsdfsdfsdfsdfsdfsdfs");
-        tasks.add("zadanie11");
-        ds.createNote(new Date(34534535), new Date(345342535), tasks);
-
-        ArrayList<String> tasks2 = new ArrayList<>();
-        tasks2.add("zadanie3");
-        ds.createNote(new Date(34453535), new Date(344534255), tasks2);
-
-        ArrayList<String> tasks3 = new ArrayList<>();
-        tasks3.add
-                ("zadanie4444444dfdsfsdfsdfsdfsdfsdfsdfsdfsdfsdfzadanie4444444dfdsfsdfsdfsdfsdfsdfsdfsdfsdfsdfzadanie4444444dfdsfsdfsdfsdfsdfsdfsdfsdfsdfsdf");
-        ds.createNote(new Date(34453535), new Date(344534255), tasks3);
-        ds.close();
+        BusProvider.getBus().unregister(this);
     }
 }
