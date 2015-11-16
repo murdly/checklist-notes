@@ -64,8 +64,8 @@ public class TasksDataSource {
         Note note = new Note();
         note.setId(noteId); //todo czyzby;d
         note.setTasks(tasks);
-        note.setDeadline(mDeadlineCalendar.getTime());
-        note.setReminder(mAlarmCalendar.getTime());
+        note.setDeadline(mDeadlineCalendar != null ? mDeadlineCalendar.getTime() : null);
+        note.setReminder(mAlarmCalendar != null ? mAlarmCalendar.getTime() : null);
         note.setType(NOTE_TYPE_TODO); //todo sprawdzic checki
 
         return note;
