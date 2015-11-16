@@ -1,9 +1,8 @@
-package com.example.arkadiuszkarbowy.tasklog.data;
+package com.example.arkadiuszkarbowy.tasklog.in;
 
-import android.app.Application;
 import android.content.Context;
 
-import com.example.arkadiuszkarbowy.tasklog.AndroidApplication;
+import com.example.arkadiuszkarbowy.tasklog.data.TasksDataSource;
 import com.example.arkadiuszkarbowy.tasklog.scopes.PerApp;
 
 import dagger.Module;
@@ -14,11 +13,6 @@ import dagger.Provides;
  */
 @Module
 public class DataModule {
-//    AndroidApplication app;
-
-//    public DataModule(AndroidApplication androidApplication) {
-//        app = androidApplication;
-//    }
 
     @Provides @PerApp
     TasksDataSource provideTasksDataSource(Context c){

@@ -25,7 +25,7 @@ public class Note {
 
     public String getType() {
         return type;
-    } // sprawdzic czy wszystkie odhaczone
+    } //todo sprawdzic czy wszystkie odhaczone
 
     public void setType(String type) {
         this.type = type;

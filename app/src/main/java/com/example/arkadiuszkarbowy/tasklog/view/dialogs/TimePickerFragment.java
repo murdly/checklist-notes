@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog.note;
+package com.example.arkadiuszkarbowy.tasklog.view.dialogs;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

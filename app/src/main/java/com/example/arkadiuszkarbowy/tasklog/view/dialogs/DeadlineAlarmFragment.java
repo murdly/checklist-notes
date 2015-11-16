@@ -1,11 +1,9 @@
-package com.example.arkadiuszkarbowy.tasklog.note;
+package com.example.arkadiuszkarbowy.tasklog.view.dialogs;
 
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.arkadiuszkarbowy.tasklog.R;
+import com.example.arkadiuszkarbowy.tasklog.view.dialogs.DatePickerFragment;
+import com.example.arkadiuszkarbowy.tasklog.view.dialogs.TimePickerFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -54,11 +55,9 @@ public class DeadlineAlarmFragment extends Fragment {
     @Bind(R.id.alarmCancel)
     ImageView mAlarmCancel;
 
-    @BindString(R.string.date) String mDate;
-    @BindString(R.string.time) String mTime;
-
     private Calendar mDeadlineCalendar, mAlarmCalendar;
     private SimpleDateFormat mDateFormat, mTimeFormat;
+    private boolean isDeadlineSet, isAlarmSet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +76,9 @@ public class DeadlineAlarmFragment extends Fragment {
 
     @OnClick(R.id.setDeadline)
     void onSetDeadline() {
+        isDeadlineSet = true;
+        mDeadlineDate.setText(mDateFormat.format(Calendar.getInstance().getTime()));
+        mDeadlineTime.setText(mTimeFormat.format(Calendar.getInstance().getTime()));
         mSetDeadline.setVisibility(View.GONE);
         mDeadlineLayout.setVisibility(View.VISIBLE);
         mDeadlineCancel.setVisibility(View.VISIBLE);
@@ -96,9 +98,8 @@ public class DeadlineAlarmFragment extends Fragment {
 
     @OnClick(R.id.deadlineCancel)
     void onDeadlineCancel() {
+        isDeadlineSet = false;
         mDeadlineCalendar.clear();
-        mDeadlineDate.setText(mDate);
-        mDeadlineTime.setText(mTime);
         mDeadlineCancel.setVisibility(View.GONE);
         mDeadlineLayout.setVisibility(View.GONE);
         mSetDeadline.setVisibility(View.VISIBLE);
@@ -107,6 +108,9 @@ public class DeadlineAlarmFragment extends Fragment {
 
     @OnClick(R.id.setAlarm)
     void onSetAlarm() {
+        isAlarmSet = true;
+        mAlarmDate.setText(mDateFormat.format(Calendar.getInstance().getTime()));
+        mAlarmTime.setText(mTimeFormat.format(Calendar.getInstance().getTime()));
         mSetAlarm.setVisibility(View.GONE);
         mAlarmLayout.setVisibility(View.VISIBLE);
         mAlarmCancel.setVisibility(View.VISIBLE);
@@ -126,9 +130,8 @@ public class DeadlineAlarmFragment extends Fragment {
 
     @OnClick(R.id.alarmCancel)
     void onAlarmCancel() {
+        isAlarmSet = false;
         mAlarmCalendar.clear();
-        mAlarmDate.setText(mDate);
-        mAlarmTime.setText(mTime);
         mAlarmCancel.setVisibility(View.GONE);
         mAlarmLayout.setVisibility(View.GONE);
         mSetAlarm.setVisibility(View.VISIBLE);
@@ -169,12 +172,12 @@ public class DeadlineAlarmFragment extends Fragment {
         }
     };
 
-    public Calendar getDeadlineCalendar(){
-        return mDeadlineCalendar;
+    public Calendar getDeadlineCalendar() {
+        return isDeadlineSet ? mDeadlineCalendar : null;
     }
 
-    public Calendar getAlarmCalendar(){
-        return mAlarmCalendar;
+    public Calendar getAlarmCalendar() {
+        return isAlarmSet ? mAlarmCalendar : null;
     }
 
     @Override

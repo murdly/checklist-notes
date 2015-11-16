@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog;
+package com.example.arkadiuszkarbowy.tasklog.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.example.arkadiuszkarbowy.tasklog.note.CreateNoteDialogActivity;
+import com.example.arkadiuszkarbowy.tasklog.R;
+import com.example.arkadiuszkarbowy.tasklog.view.adapters.MyPagerAdapter;
+import com.example.arkadiuszkarbowy.tasklog.view.fragments.TabFragment;
 
 import butterknife.Bind;
 import butterknife.BindString;
@@ -54,11 +56,5 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter.addFragment(mDoneFragment, mDone);
         mViewPager.setAdapter(pagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 }

@@ -2,6 +2,7 @@ package com.example.arkadiuszkarbowy.tasklog.util;
 
 import android.database.Cursor;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -9,11 +10,11 @@ import java.util.Date;
  */
 public class Conversion {
 
-    public static Long persistDate(Date date) {
-        if (date != null) {
-            return date.getTime();
+    public static Long persistDate(Calendar calendar) {
+        if (calendar != null) {
+            return calendar.getTime().getTime();
         }
-        return null;
+        return -1L;
     }
 
     public static Date loadDate(Cursor cursor, int index) {

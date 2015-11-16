@@ -1,11 +1,8 @@
-package com.example.arkadiuszkarbowy.tasklog;
+package com.example.arkadiuszkarbowy.tasklog.in;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.example.arkadiuszkarbowy.tasklog.data.DataModule;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 
 /**
  * Created by arkadiuszkarbowy on 28/10/15.

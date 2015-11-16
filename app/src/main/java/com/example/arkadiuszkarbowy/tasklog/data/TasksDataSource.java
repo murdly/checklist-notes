@@ -46,8 +46,8 @@ public class TasksDataSource {
                            Calendar mAlarmCalendar) {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.COLUMN_TYPE, NOTE_TYPE_TODO);
-        values.put(SQLiteHelper.COLUMN_DEADLINE, Conversion.persistDate(mDeadlineCalendar.getTime()));
-        values.put(SQLiteHelper.COLUMN_REMINDER, Conversion.persistDate(mAlarmCalendar.getTime()));
+        values.put(SQLiteHelper.COLUMN_DEADLINE, Conversion.persistDate(mDeadlineCalendar));
+        values.put(SQLiteHelper.COLUMN_REMINDER, Conversion.persistDate(mAlarmCalendar));
         long noteId = database.insert(SQLiteHelper.TABLE_NOTES, null,
                 values);
 
@@ -82,16 +82,7 @@ public class TasksDataSource {
         }
     }
 
-//        Cursor cursor = database.query(SQLiteHelper.TABLE_NOTES,
-//                SQLiteHelper.allColumnsNotes, SQLiteHelper.COLUMN_ID_NOTE + " = " + insertId, null,
-//                null, null, null);
-//        cursor.moveToFirst();
-//        Note newNote = cursorToNote(cursor);
-//        cursor.close();
-//        return newNote;
-
-    public List<Note> getTodoNotes() {
-        Log.d("TaskDatSource", "getTodoNotes");
+    public ArrayList<Note> getTodoNotes() {
 
         String table = SQLiteHelper.TABLE_NOTES;
         String[] columns = SQLiteHelper.allColumnsNotes;
@@ -99,15 +90,16 @@ public class TasksDataSource {
         String[] args = {NOTE_TYPE_TODO};
 
         Cursor cursor = database.query(table, columns, where, args, null, null, null);
+        Log.d("TaskDatSource", "getTodoNotes " + cursor.getCount());
 
         return cursorToNoteList(cursor);
     }
 
-    private List<Note> cursorToNoteList(Cursor cursor) {
-        List<Note> notes = new ArrayList<Note>();
+    private ArrayList<Note> cursorToNoteList(Cursor cursor) {
+        ArrayList<Note> notes = new ArrayList<Note>();
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
+        boolean any = cursor.moveToFirst();
+        while (any && !cursor.isAfterLast()) {
             Note note = cursorToNote(cursor);
             note.setTasks(getTasksForNote(note.getId()));
             notes.add(note);
@@ -118,23 +110,14 @@ public class TasksDataSource {
         return notes;
     }
 
-    public List<Note> getAllNotes() {
-        List<Note> notes = new ArrayList<Note>();
-
-        Cursor cursor = database.query(SQLiteHelper.TABLE_NOTES,
-                SQLiteHelper.allColumnsNotes, null, null, null, null, null);
-
-        return cursorToNoteList(cursor);
-    }
-
     private ArrayList<Task> getTasksForNote(long idNote) {
         ArrayList<Task> tasks = new ArrayList<>();
 
         Cursor cursor = database.query(SQLiteHelper.TABLE_TASKS, SQLiteHelper.allColumnsTasks, SQLiteHelper
                 .COLUMN_FRID_NOTE + " = " + idNote, null, null, null, null, null);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
+        boolean any = cursor.moveToFirst();
+        while (any && !cursor.isAfterLast()) {
             Task task = cursorToTask(cursor);
             tasks.add(task);
             cursor.moveToNext();
@@ -167,23 +150,14 @@ public class TasksDataSource {
         return new ArrayList<>();
     }
 
+    public void delete(long id) {
 
-    //    public void deleteComment(TaskNote taskNote) {
-//        long id = taskNote.getId();
-//        System.out.println("Comment deleted with id: " + id);
-//        database.delete(SQLiteHelper.TABLE_COMMENTS, SQLiteHelper.COLUMN_ID
-//                + " = " + id, null);
-//    }
+        int tasksRemoved = database.delete(SQLiteHelper.TABLE_TASKS, SQLiteHelper.COLUMN_FRID_NOTE
+                + " = " + id, null);
 
+        int notesRemoved = database.delete(SQLiteHelper.TABLE_NOTES, SQLiteHelper.COLUMN_ID_NOTE
+                + " = " + id, null);
 
-//
-//
-//
-//    public void deleteMyPlaceById(long id) {
-//        System.out.println("MyPlace deleted with id: " + id);
-//        mDatabase.delete(SQLiteHelper.TABLE_PLACES, SQLiteHelper.COLUMN_ID
-//                + " = " + id, null);
-//    }
-
-
+        Log.d("TaskDataSource", "delete() notes: " + notesRemoved + " with task: " + tasksRemoved);
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog;
+package com.example.arkadiuszkarbowy.tasklog.view.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

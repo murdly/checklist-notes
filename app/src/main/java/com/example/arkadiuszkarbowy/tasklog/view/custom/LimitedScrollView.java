@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog.note;
+package com.example.arkadiuszkarbowy.tasklog.view.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;

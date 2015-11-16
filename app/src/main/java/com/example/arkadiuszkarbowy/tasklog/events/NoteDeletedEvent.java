@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog.note;
+package com.example.arkadiuszkarbowy.tasklog.events;
 
 /**
  * Created by arkadiuszkarbowy on 13/11/15.
@@ -6,8 +6,8 @@ package com.example.arkadiuszkarbowy.tasklog.note;
 public class NoteDeletedEvent {
     public long id;
     public int position;
-    public NoteDeletedEvent(long id, int positon) {
+    public NoteDeletedEvent(long id, int position) {
         this.id = id;
-        this.position = positon;
+        this.position = position;
     }
 }

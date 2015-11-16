@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog;
+package com.example.arkadiuszkarbowy.tasklog.view.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.arkadiuszkarbowy.tasklog.view.custom.ExpandedListView;
+import com.example.arkadiuszkarbowy.tasklog.R;
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.data.Task;
-import com.example.arkadiuszkarbowy.tasklog.note.NoteDeletedEvent;
+import com.example.arkadiuszkarbowy.tasklog.events.NoteDeletedEvent;
 import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
 
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemCount() {
         return mNotes == null ? 0 : mNotes.size();
     }
+
 
 
     public static class NoteViewHolder extends RecyclerView.ViewHolder {

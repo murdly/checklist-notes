@@ -23,7 +23,7 @@
             android:background="@android:color/transparent"
             android:layout_marginTop="8dp"/>
 
-        <com.example.arkadiuszkarbowy.tasklog.ExpandedListView
+        <com.example.arkadiuszkarbowy.tasklog.view.custom.ExpandedListView
             android:id="@+id/list"
             android:layout_below="@id/deleteNote"
             android:layout_width="match_parent"

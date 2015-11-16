@@ -1,14 +1,12 @@
-package com.example.arkadiuszkarbowy.tasklog;
+package com.example.arkadiuszkarbowy.tasklog.in;
 
-import android.app.Application;
 import android.content.Context;
 
-import com.example.arkadiuszkarbowy.tasklog.data.DataModule;
-import com.example.arkadiuszkarbowy.tasklog.note.CreateNoteDialogActivity;
+import com.example.arkadiuszkarbowy.tasklog.view.activities.CreateNoteDialogActivity;
 import com.example.arkadiuszkarbowy.tasklog.scopes.PerApp;
+import com.example.arkadiuszkarbowy.tasklog.view.fragments.DoneFragment;
+import com.example.arkadiuszkarbowy.tasklog.view.fragments.TodoFragment;
 import com.squareup.otto.Bus;
-
-import javax.inject.Singleton;
 
 import dagger.Component;
 
@@ -22,9 +20,11 @@ import dagger.Component;
                 DataModule.class
         })
 public interface ApplicationComponent {
-    void inject(TabFragment fragment);
+    void inject(TodoFragment todo);
+    void inject(DoneFragment done);
     void inject(CreateNoteDialogActivity activity);
 
 //    Application application();
     Context context();
+    Bus bus();
 }

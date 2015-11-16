@@ -8,23 +8,23 @@
                 android:paddingTop="16dp">
 
 
-    <com.example.arkadiuszkarbowy.tasklog.note.LimitedScrollView
+    <com.example.arkadiuszkarbowy.tasklog.view.custom.LimitedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.example.arkadiuszkarbowy.tasklog.note.TaskRowLinearLayout
+        <com.example.arkadiuszkarbowy.tasklog.view.custom.TaskRowLayout
             android:id="@+id/taskList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.example.arkadiuszkarbowy.tasklog.note.Row
+            <com.example.arkadiuszkarbowy.tasklog.view.custom.Row
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-        </com.example.arkadiuszkarbowy.tasklog.note.TaskRowLinearLayout>
+        </com.example.arkadiuszkarbowy.tasklog.view.custom.TaskRowLayout>
 
-    </com.example.arkadiuszkarbowy.tasklog.note.LimitedScrollView>
+    </com.example.arkadiuszkarbowy.tasklog.view.custom.LimitedScrollView>
 
     <TextView
         android:id="@+id/nextRow"

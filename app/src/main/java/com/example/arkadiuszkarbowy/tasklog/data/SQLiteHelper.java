@@ -29,7 +29,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public static String[] allColumnsTasks = { COLUMN_ID_TASK, COLUMN_FRID_NOTE, COLUMN_TEXT, COLUMN_ISDONE };
 
     private static final String DATABASE_NAME = "tasknotes.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
 
     private static final String CREATE_TABLE_NOTES = "create table "
             + TABLE_NOTES + "(" +

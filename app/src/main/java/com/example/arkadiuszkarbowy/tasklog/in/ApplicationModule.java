@@ -1,10 +1,11 @@
-package com.example.arkadiuszkarbowy.tasklog;
+package com.example.arkadiuszkarbowy.tasklog.in;
 
 import android.app.Application;
 import android.content.Context;
 
 import com.example.arkadiuszkarbowy.tasklog.scopes.PerApp;
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import javax.inject.Singleton;
 
@@ -26,5 +27,11 @@ public class ApplicationModule {
     @PerApp
     Context provideApplicationContext() {
         return application.getApplicationContext();
+    }
+
+    @Provides
+    @PerApp
+    Bus provideBus() {
+        return new Bus(ThreadEnforcer.MAIN);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog;
+package com.example.arkadiuszkarbowy.tasklog.view.custom;
 
 import android.content.Context;
 import android.graphics.Canvas;

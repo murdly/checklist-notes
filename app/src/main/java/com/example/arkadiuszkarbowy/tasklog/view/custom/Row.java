@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog.note;
+package com.example.arkadiuszkarbowy.tasklog.view.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -59,7 +59,7 @@ public class Row extends LinearLayout {
 
     @OnClick(R.id.delete)
     void removeRow(){
-        ((TaskRowLinearLayout)getParent()).removeView(this);
+        ((TaskRowLayout)getParent()).removeView(this);
 
     }
 

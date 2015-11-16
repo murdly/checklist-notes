@@ -1,29 +1,23 @@
-package com.example.arkadiuszkarbowy.tasklog.note;
+package com.example.arkadiuszkarbowy.tasklog.view.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.arkadiuszkarbowy.tasklog.note.Row;
-
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by arkadiuszkarbowy on 02/11/15.
  */
-public class TaskRowLinearLayout extends LinearLayout {
+public class TaskRowLayout extends LinearLayout {
     private Context mContext;
 
-    public TaskRowLinearLayout(Context context) {
+    public TaskRowLayout(Context context) {
         super(context);
     }
 
-    public TaskRowLinearLayout(Context context, AttributeSet attrs) {
+    public TaskRowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
     }

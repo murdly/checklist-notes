@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog;
+package com.example.arkadiuszkarbowy.tasklog.view.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.example.arkadiuszkarbowy.tasklog.R;
 import com.example.arkadiuszkarbowy.tasklog.data.Task;
 
 import java.util.ArrayList;
