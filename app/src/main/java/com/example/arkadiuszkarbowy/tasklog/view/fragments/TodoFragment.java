@@ -2,7 +2,9 @@ package com.example.arkadiuszkarbowy.tasklog.view.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
+import com.example.arkadiuszkarbowy.tasklog.R;
 import com.example.arkadiuszkarbowy.tasklog.in.AndroidApplication;
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.presenters.NotesTodoPresenter;
@@ -46,6 +48,11 @@ public class TodoFragment extends TabFragment implements TodoView {
     public void remove(int position) {
         mData.remove(position);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showToastBlankNote() {
+        Toast.makeText(getActivity() , getResources().getString(R.string.blank), Toast.LENGTH_SHORT).show();
     }
 
     @Override

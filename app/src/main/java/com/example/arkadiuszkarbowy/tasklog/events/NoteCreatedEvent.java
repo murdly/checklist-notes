@@ -1,5 +1,8 @@
 package com.example.arkadiuszkarbowy.tasklog.events;
 
+import com.example.arkadiuszkarbowy.tasklog.view.custom.Row;
+import com.example.arkadiuszkarbowy.tasklog.view.custom.TaskRowLayout;
+
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 
@@ -8,11 +11,12 @@ import java.util.LinkedHashMap;
  */
 public class NoteCreatedEvent {
 
-    public LinkedHashMap<String, Boolean> taskEntries;
+    public LinkedHashMap<Integer, TaskRowLayout.Entry> taskEntries;
     public Calendar deadlineCalendar, alarmCalendar;
 
 
-    public NoteCreatedEvent(LinkedHashMap<String, Boolean> entries, Calendar deadlineCalendar, Calendar alarmCalendar) {
+    public NoteCreatedEvent(LinkedHashMap<Integer, TaskRowLayout.Entry> entries, Calendar deadlineCalendar, Calendar
+            alarmCalendar) {
         taskEntries = entries;
         this.deadlineCalendar = deadlineCalendar;
         this.alarmCalendar = alarmCalendar;

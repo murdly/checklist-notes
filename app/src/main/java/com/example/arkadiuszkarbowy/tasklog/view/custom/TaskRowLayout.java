@@ -23,15 +23,15 @@ public class TaskRowLayout extends LinearLayout {
     }
 
     public void addRow() {
-        Row entry = new Row(mContext);
-        addView(entry);
+        Row row = new Row(mContext);
+        addView(row);
     }
 
-    public LinkedHashMap<String, Boolean> getEntries(){
-        LinkedHashMap<String,Boolean> map = new LinkedHashMap<>();
+    public LinkedHashMap<Integer, Entry> getEntries(){
+        LinkedHashMap<Integer, Entry> map = new LinkedHashMap<>();
         for(int i = 0 ; i < getChildCount(); i++) {
-            Row entry = ((Row)getChildAt(i));
-            map.put(entry.getNoteText(), entry.isNoteChecked());
+            Row row = (Row) getChildAt(i);
+            map.put(i, new Entry(row));
         }
 
         return map;
@@ -45,5 +45,20 @@ public class TaskRowLayout extends LinearLayout {
         int index = (removedIndex == getChildCount()) ? removedIndex - 1 : removedIndex;
         if(getChildCount() > 0 )
             getChildAt(index).requestFocus();
+    }
+
+
+    public class Entry {
+        public String noteText;
+        public boolean isNoteChecked;
+
+        public Entry(Row row) {
+            this.noteText = row.getNoteText();
+            this.isNoteChecked = row.isNoteChecked();
+        }
+
+        public boolean hasContent(){
+            return !noteText.isEmpty();
+        }
     }
 }

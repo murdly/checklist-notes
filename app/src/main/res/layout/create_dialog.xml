@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="280dp"
                 android:layout_height="300dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
@@ -21,7 +22,8 @@
 
             <com.example.arkadiuszkarbowy.tasklog.view.custom.Row
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:isFirst="true"/>
         </com.example.arkadiuszkarbowy.tasklog.view.custom.TaskRowLayout>
 
     </com.example.arkadiuszkarbowy.tasklog.view.custom.LimitedScrollView>

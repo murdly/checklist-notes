@@ -4,4 +4,8 @@
         <attr name="text" format="string" />
         <attr name="myicon" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="Row">
+        <attr name="isFirst" format="boolean" />
+    </declare-styleable>
 </resources>

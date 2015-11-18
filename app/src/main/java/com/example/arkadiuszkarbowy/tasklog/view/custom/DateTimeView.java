@@ -62,6 +62,10 @@ public class DateTimeView extends RelativeLayout {
         super(context, attrs, defStyleAttr);
         View v = inflate(context, R.layout.datetime_view, this);
         ButterKnife.bind(v);
+        obtainStyle(context, attrs);
+    }
+
+    private void obtainStyle(Context context, AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.DateTimeView,

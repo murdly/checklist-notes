@@ -15,4 +15,6 @@ public interface TodoView {
 
     void remove(int position);
 
+    void showToastBlankNote();
+
 }

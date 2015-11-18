@@ -10,4 +10,5 @@
     <string name="deadline">Ustaw termin</string>
     <string name="date">data</string>
     <string name="time">godzina</string>
+    <string name="blank">Pusta notatka nie została dodana.</string>
 </resources>

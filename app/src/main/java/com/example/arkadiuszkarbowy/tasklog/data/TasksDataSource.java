@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.arkadiuszkarbowy.tasklog.scopes.PerApp;
 import com.example.arkadiuszkarbowy.tasklog.util.Conversion;
+import com.example.arkadiuszkarbowy.tasklog.view.custom.TaskRowLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,7 +43,7 @@ public class TasksDataSource {
         dbHelper.close();
     }
 
-    public Note createNote(LinkedHashMap<String, Boolean> entries, Calendar mDeadlineCalendar,
+    public Note createNote(LinkedHashMap<Integer, TaskRowLayout.Entry> entries, Calendar mDeadlineCalendar,
                            Calendar mAlarmCalendar) {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.COLUMN_TYPE, NOTE_TYPE_TODO);
@@ -52,17 +53,18 @@ public class TasksDataSource {
                 values);
 
         ArrayList<Task> tasks = new ArrayList<>();
-        for (String text : entries.keySet()) {
+        for (Integer i : entries.keySet()) {
+            TaskRowLayout.Entry entry = entries.get(i);
             Task task = new Task();
-            task.setIsDone(entries.get(text));
-            task.setText(text);
+            task.setIsDone(entry.isNoteChecked);
+            task.setText(entry.noteText);
             tasks.add(task);
         }
 
         createTasks(tasks, noteId);
 
         Note note = new Note();
-        note.setId(noteId); //todo czyzby;d
+        note.setId(noteId);
         note.setTasks(tasks);
         note.setDeadline(mDeadlineCalendar != null ? mDeadlineCalendar.getTime() : null);
         note.setReminder(mAlarmCalendar != null ? mAlarmCalendar.getTime() : null);
