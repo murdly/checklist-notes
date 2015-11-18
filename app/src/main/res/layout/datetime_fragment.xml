@@ -16,6 +16,6 @@
         android:id="@+id/alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        dtv:myicon="@drawable/ic_alarm"
+        dtv:myicon="@drawable/ic_reminder"
         dtv:text="@string/alarm"/>
 </LinearLayout>

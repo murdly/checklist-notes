@@ -89,8 +89,8 @@ public class DateTimeView extends RelativeLayout {
     @OnClick(R.id.set)
     void onSet() {
         isSet = true;
-        mDate.setText(mDateFormat.format(Calendar.getInstance().getTime()));
-        mTime.setText(mTimeFormat.format(Calendar.getInstance().getTime()));
+        mDate.setText(mDateFormat.format(mCalendar.getTime()));
+        mTime.setText(mTimeFormat.format(mCalendar.getTime()));
         mSet.setVisibility(View.GONE);
         mDateTimeLayout.setVisibility(View.VISIBLE);
         mCancel.setVisibility(View.VISIBLE);
@@ -117,7 +117,7 @@ public class DateTimeView extends RelativeLayout {
         mSet.setVisibility(View.VISIBLE);
     }
 
-    DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
+    private DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             mCalendar.set(year, monthOfYear, dayOfMonth);
@@ -125,7 +125,7 @@ public class DateTimeView extends RelativeLayout {
         }
     };
 
-    TimePickerDialog.OnTimeSetListener mTimeListener = new TimePickerDialog.OnTimeSetListener() {
+    private TimePickerDialog.OnTimeSetListener mTimeListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);

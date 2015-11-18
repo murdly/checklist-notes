@@ -21,6 +21,7 @@ public class Conversion {
         if (cursor.isNull(index)) {
             return null;
         }
-        return new Date(cursor.getLong(index));
+        long ms = cursor.getLong(index);
+        return ms != -1L ? new Date(ms) : null;
     }
 }

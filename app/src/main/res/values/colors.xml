@@ -11,5 +11,6 @@
     <color name="textColorSecondary">#B3FFFFFF</color>
     <color name="textColorPrimaryInverse">#DE000000</color>
     <color name="textColorSecondaryInverse">#8A000000</color>
+    <color name="textColorSecondaryLight">#3A000000</color>
 
 </resources>

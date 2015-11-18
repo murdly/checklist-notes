@@ -41,9 +41,9 @@ public class NotesTodoPresenter implements Presenter {
 
     @Subscribe
     public void noteInserted(NoteCreatedEvent event) {
-        if(!hasContent(event.taskEntries)){
+        if (!hasContent(event.taskEntries)) {
             mView.showToastBlankNote();
-        }else {
+        } else {
             mDataSource.open();
             Note note = mDataSource.createNote(event.taskEntries, event.deadlineCalendar, event.alarmCalendar);
             mDataSource.close();
@@ -54,8 +54,7 @@ public class NotesTodoPresenter implements Presenter {
     private boolean hasContent(LinkedHashMap<Integer, TaskRowLayout.Entry> taskEntries) {
         boolean hasContent = false;
         int i = 0;
-
-        while(!hasContent && i<taskEntries.size()) {
+        while (!hasContent && i < taskEntries.size()) {
             hasContent = taskEntries.get(i).hasContent();
             i++;
         }
@@ -68,9 +67,7 @@ public class NotesTodoPresenter implements Presenter {
         mDataSource.open();
         mDataSource.delete(event.id);
         mDataSource.close();
-
         mView.remove(event.position);
-
     }
 
     @Override

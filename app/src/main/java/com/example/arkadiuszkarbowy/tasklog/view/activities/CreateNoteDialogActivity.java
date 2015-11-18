@@ -2,7 +2,6 @@ package com.example.arkadiuszkarbowy.tasklog.view.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.arkadiuszkarbowy.tasklog.R;
@@ -45,7 +44,7 @@ public class CreateNoteDialogActivity extends AppCompatActivity {
         super.onStop();
 
         NoteCreatedEvent event = new NoteCreatedEvent(mTasksLayout.getEntries(), mFragment.getDeadlineCalendar(),
-                mFragment.getAlarmCalendar());
+                mFragment.getReminderCalendar());
         BusProvider.getBus().post(event);
     }
 }

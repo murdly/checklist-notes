@@ -24,7 +24,6 @@ public class DeadlineAlarmFragment extends Fragment {
     @Bind(R.id.alarm)
     DateTimeView mAlarm;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.datetime_fragment, container, false);
@@ -42,7 +41,7 @@ public class DeadlineAlarmFragment extends Fragment {
         return mDeadline.getCalendar();
     }
 
-    public Calendar getAlarmCalendar() {
+    public Calendar getReminderCalendar() {
         return mAlarm.getCalendar();
     }
 
