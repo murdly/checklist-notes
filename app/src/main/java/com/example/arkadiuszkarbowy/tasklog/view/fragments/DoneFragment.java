@@ -3,7 +3,7 @@ package com.example.arkadiuszkarbowy.tasklog.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.example.arkadiuszkarbowy.tasklog.in.AndroidApplication;
+import com.example.arkadiuszkarbowy.tasklog.di.AndroidApplication;
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.presenters.NotesDonePresenter;
 import com.example.arkadiuszkarbowy.tasklog.view.DoneView;

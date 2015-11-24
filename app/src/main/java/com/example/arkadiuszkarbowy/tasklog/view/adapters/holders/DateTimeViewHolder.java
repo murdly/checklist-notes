@@ -1,5 +1,6 @@
 package com.example.arkadiuszkarbowy.tasklog.view.adapters.holders;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,10 +23,11 @@ public class DateTimeViewHolder {
     @Bind(R.id.dateAndTime)
     TextView mDateTime;
 
-    SimpleDateFormat mFormat = new SimpleDateFormat("EEE, MMM d 'o' HH:mm", Locale.getDefault());
+    private SimpleDateFormat mFormat;
 
     public DateTimeViewHolder(View layout) {
         ButterKnife.bind(this, layout);
+        mFormat = new SimpleDateFormat("EEE, MMM d 'o' HH:mm", Locale.getDefault());
     }
 
     public void setIcon(int id){

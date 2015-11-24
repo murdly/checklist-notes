@@ -2,6 +2,7 @@ package com.example.arkadiuszkarbowy.tasklog.view.adapters.holders;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,30 +48,40 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         mList.setAdapter(new TaskListAdapter(context, R.layout.task_list_item, tasks));
     }
 
-    public void setDeadline(Date deadline) {
+    public void setTimers(Date deadline, Date reminder){
+        boolean visible = deadline != null || reminder != null;
+            showContainer(visible);
+
+        setDeadline(deadline);
+        setReminder(reminder);
+    }
+
+    private void showContainer(boolean visible) {
+        mContainer.setVisibility(visible ? View.VISIBLE :View.GONE);
+    }
+
+    private void setDeadline(Date deadline) {
         if (deadline != null) {
-            showContainerIfNotVisibleYet();
             mDeadlineLayout.setVisibility(View.VISIBLE);
             mDeadlineHolder.setIcon(R.drawable.ic_deadline_light);
             mDeadlineHolder.setDateTime(deadline);
+        } else {
+            mDeadlineLayout.setVisibility(View.GONE);
         }
     }
 
-    public void setReminder(Date reminder) {
+
+    private void setReminder(Date reminder) {
         if (reminder != null) {
-            showContainerIfNotVisibleYet();
             mReminderLayout.setVisibility(View.VISIBLE);
             mReminderHolder.setIcon(R.drawable.ic_reminder_light);
             mReminderHolder.setDateTime(reminder);
+        } else {
+            mReminderLayout.setVisibility(View.GONE);
         }
     }
 
     public void setOnDeleteListener(View.OnClickListener onDeleteListener) {
         mDelete.setOnClickListener(onDeleteListener);
-    }
-
-    private void showContainerIfNotVisibleYet() {
-        if(mContainer.getVisibility() != View.VISIBLE)
-            mContainer.setVisibility(View.VISIBLE);
     }
 }

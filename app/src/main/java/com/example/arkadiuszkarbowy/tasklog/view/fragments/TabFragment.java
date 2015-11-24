@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TabFragment extends Fragment {
+public abstract class TabFragment extends Fragment {
     private static final int GRID_COLUMNS = 2;
     public final static String TAB_TYPE_KEY = "TabFragment$TabType";
     public static final int TAB_TODO = 0;

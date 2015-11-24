@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog.in;
+package com.example.arkadiuszkarbowy.tasklog.di;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,8 +6,6 @@ import android.content.Context;
 import com.example.arkadiuszkarbowy.tasklog.scopes.PerApp;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;

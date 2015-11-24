@@ -2,6 +2,7 @@ package com.example.arkadiuszkarbowy.tasklog.view.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
 //            return new SimpleTaskViewHolder(v);
 //        }
-
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
         return new NoteViewHolder(v);
     }
@@ -58,12 +58,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void onBindListTaskViewHolder(NoteViewHolder holder, final int position) {
         final int invertedPosition = getItemCount() - position - 1;
         final Note note = mNotes.get(invertedPosition);
-//        for(Task task : note.getTasks()){
-//            holder.listText.setText(task.getText());
-//        }
         holder.setTasks(mContext, note.getTasks());
-        holder.setDeadline(note.getDeadline());
-        holder.setReminder(note.getReminder());
+        holder.setTimers(note.getDeadline(), note.getReminder());
         holder.setOnDeleteListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

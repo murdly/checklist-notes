@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -75,7 +76,7 @@ public class DateTimeView extends RelativeLayout {
             mSet.setText(a.getString(R.styleable.DateTimeView_text));
             mIcon.setImageResource(a.getResourceId(R.styleable.DateTimeView_myicon, -1));
         } finally {
-            a.recycle();
+            a.recycle(); 
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog.in;
+package com.example.arkadiuszkarbowy.tasklog.di;
 
 import android.app.Application;
 import android.content.Context;
