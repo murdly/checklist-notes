@@ -1,5 +1,7 @@
 package com.example.arkadiuszkarbowy.tasklog.presenters;
 
+import android.util.Log;
+
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.data.TasksDataSource;
 import com.example.arkadiuszkarbowy.tasklog.events.NoteCreatedEvent;
@@ -28,7 +30,6 @@ public class NotesTodoPresenter implements TodoPresenter {
     @Inject
     public NotesTodoPresenter(TasksDataSource data) {
         mDataSource = data;
-        BusProvider.getBus().register(this);
     }
 
     public void setView(TodoView view) {
@@ -43,7 +44,7 @@ public class NotesTodoPresenter implements TodoPresenter {
         mView.setData(mData);
     }
 
-    @Subscribe
+    @Override
     public void noteInserted(NoteCreatedEvent event) {
         if (!hasContent(event.taskEntries)) {
             mView.showToastBlankNote();
@@ -67,7 +68,7 @@ public class NotesTodoPresenter implements TodoPresenter {
         return hasContent;
     }
 
-    @Subscribe
+    @Override
     public void noteDeleted(NoteDeletedEvent event) {
         mDataSource.open();
         mDataSource.delete(event.id);
@@ -89,16 +90,19 @@ public class NotesTodoPresenter implements TodoPresenter {
 
     @Override
     public void taskChecked(long id) {
-
+        mDataSource.open();
+        mDataSource.updateTaskDone(id);
+        mDataSource.close();
     }
 
     @Override
     public void taskUnchecked(long id) {
-
+        mDataSource.open();
+        mDataSource.updateTaskTodo(id);
+        mDataSource.close();
     }
 
     @Override
     public void onDestroy() {
-        BusProvider.getBus().unregister(this);
     }
 }

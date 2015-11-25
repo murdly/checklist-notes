@@ -13,7 +13,6 @@ import com.example.arkadiuszkarbowy.tasklog.view.custom.TaskRowLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -53,9 +52,11 @@ public class TasksDataSource {
                 values);
 
         ArrayList<Task> tasks = new ArrayList<>();
+        long availableTaskId = getFirstAvailableTaskId();
         for (Integer i : entries.keySet()) {
             TaskRowLayout.Entry entry = entries.get(i);
             Task task = new Task();
+            task.setId(availableTaskId + i);
             task.setIsDone(entry.isNoteChecked);
             task.setText(entry.noteText);
             tasks.add(task);
@@ -82,6 +83,7 @@ public class TasksDataSource {
             values.put(SQLiteHelper.COLUMN_ISDONE, task.isDone() ? 1 : 0);
             database.insert(SQLiteHelper.TABLE_TASKS, null, values);
         }
+
     }
 
     public ArrayList<Note> getTodoNotes() {
@@ -117,7 +119,6 @@ public class TasksDataSource {
 
         Cursor cursor = database.query(SQLiteHelper.TABLE_TASKS, SQLiteHelper.allColumnsTasks, SQLiteHelper
                 .COLUMN_FRID_NOTE + " = " + idNote, null, null, null, null, null);
-
         boolean any = cursor.moveToFirst();
         while (any && !cursor.isAfterLast()) {
             Task task = cursorToTask(cursor);
@@ -133,6 +134,7 @@ public class TasksDataSource {
         int isDone = cursor.getInt(cursor.getColumnIndex(SQLiteHelper.COLUMN_ISDONE));
         task.setIsDone(isDone == 1);
         task.setText(cursor.getString(cursor.getColumnIndex(SQLiteHelper.COLUMN_TEXT)));
+        Log.d("cursorToTask()", task.getText() + "-id: " + task.getId() + " -isDone: " + task.isDone());
         return task;
     }
 
@@ -161,5 +163,34 @@ public class TasksDataSource {
                 + " = " + id, null);
 
         Log.d("TaskDataSource", "delete() notes: " + notesRemoved + " with task: " + tasksRemoved);
+    }
+
+    public long getFirstAvailableTaskId() {
+        long testNoteId = -1;
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.COLUMN_FRID_NOTE, testNoteId);
+        values.put(SQLiteHelper.COLUMN_TEXT, "test");
+        values.put(SQLiteHelper.COLUMN_ISDONE, -1);
+        long lastId =  database.insert(SQLiteHelper.TABLE_TASKS, null, values);
+        this.delete(testNoteId);
+        return lastId + 1;
+    }
+
+    public void updateTaskDone(long id) {
+        updateTask(id, 1);
+    }
+
+    public void updateTaskTodo(long id) {
+        updateTask(id, 0);
+    }
+
+    private void updateTask(long id, int isDone) {
+        String where = SQLiteHelper.COLUMN_ID_TASK + " = " + id;
+        ContentValues args = new ContentValues();
+        args.put(SQLiteHelper.COLUMN_ISDONE, isDone);
+        database.update(SQLiteHelper.TABLE_TASKS, args, where, null);
+
+        Log.d("TaskDataSource", "updateTask() id: " + id + " isDOne: " + isDone);
+
     }
 }

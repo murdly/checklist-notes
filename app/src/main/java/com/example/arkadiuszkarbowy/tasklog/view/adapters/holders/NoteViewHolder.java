@@ -1,10 +1,13 @@
 package com.example.arkadiuszkarbowy.tasklog.view.adapters.holders;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.arkadiuszkarbowy.tasklog.R;
 import com.example.arkadiuszkarbowy.tasklog.data.Task;
@@ -17,6 +20,7 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by arkadiuszkarbowy on 18/11/15.
@@ -42,7 +46,6 @@ public class NoteViewHolder extends RecyclerView.ViewHolder{
         ButterKnife.bind(this, view);
         mDeadlineHolder = new DateTimeViewHolder(mDeadlineLayout);
         mReminderHolder = new DateTimeViewHolder(mReminderLayout);
-
     }
 
     public void setTasks(Context context, ArrayList<Task> tasks, OnTaskInteractionListener
@@ -74,7 +77,6 @@ public class NoteViewHolder extends RecyclerView.ViewHolder{
         }
     }
 
-
     private void setReminder(Date reminder) {
         if (reminder != null) {
             mReminderLayout.setVisibility(View.VISIBLE);
@@ -84,6 +86,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder{
             mReminderLayout.setVisibility(View.GONE);
         }
     }
+
 
     public void setOnDeleteListener(View.OnClickListener onDeleteListener) {
         mDelete.setOnClickListener(onDeleteListener);

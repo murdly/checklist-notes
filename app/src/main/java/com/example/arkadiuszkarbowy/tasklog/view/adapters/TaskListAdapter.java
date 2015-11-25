@@ -1,6 +1,7 @@
 package com.example.arkadiuszkarbowy.tasklog.view.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 /**
  * Created by arkadiuszkarbowy on 02/11/15.
  */
-public class TaskListAdapter extends ArrayAdapter<Task>{
+public class TaskListAdapter extends ArrayAdapter<Task> {
 
     private OnTaskInteractionListener mTaskInteractionListener;
 
@@ -36,8 +37,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_list_item, parent, false);
             holder = new TaskViewHolder(convertView);
             convertView.setTag(holder);
-        }
-        {
+        } else {
             holder = (TaskViewHolder) convertView.getTag();
         }
 
@@ -50,11 +50,11 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
 
     }
 
-    private void setListeners(TaskViewHolder holder, final long taskId) {
-        holder.mBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setListeners(final TaskViewHolder holder, final long taskId) {
+        holder.mBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+            public void onClick(View v) {
+                if (holder.mBox.isChecked())
                     mTaskInteractionListener.onChecked(taskId);
                 else
                     mTaskInteractionListener.onUnchecked(taskId);

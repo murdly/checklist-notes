@@ -47,7 +47,6 @@ public class TaskRowLayout extends LinearLayout {
             getChildAt(index).requestFocus();
     }
 
-
     public class Entry {
         public String noteText;
         public boolean isNoteChecked;
