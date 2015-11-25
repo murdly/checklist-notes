@@ -35,9 +35,6 @@ public abstract class TabFragment extends Fragment {
     @Bind(R.id.emptyView)
     TextView mEmptyView;
 
-    protected RecyclerAdapter mAdapter;
-    protected List<Note> mData;
-
     public static TabFragment createInstance(int tabType) {
         TabFragment tabFragment;
 
@@ -52,6 +49,8 @@ public abstract class TabFragment extends Fragment {
         return tabFragment;
     }
 
+    public abstract RecyclerAdapter getAdapter();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -60,13 +59,12 @@ public abstract class TabFragment extends Fragment {
     }
 
     protected void setUpRecyclerView() {
-        mAdapter = new RecyclerAdapter(getActivity(), mData);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(GRID_COLUMNS, StaggeredGridLayoutManager
                 .VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setEmptyView(mEmptyView);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(getAdapter());
     }
 
     @Override

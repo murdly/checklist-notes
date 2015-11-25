@@ -12,61 +12,58 @@ import com.example.arkadiuszkarbowy.tasklog.R;
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.events.NoteDeletedEvent;
 import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
+import com.example.arkadiuszkarbowy.tasklog.view.interactors.OnTaskInteractionListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Note> mNotes;
-    private int mType;
     private Context mContext;
 
-    public RecyclerAdapter(Context context, List<Note> itemList) {
-        mContext = context;
-        mNotes = itemList;
+    private OnTaskInteractionListener mListener;
+
+    public RecyclerAdapter() {
     }
 
-//    @Override
-//    public int getItemViewType(int position) {
-//        mType = mNotes.get(position).getType();
-//        return mType;
-//    }
+    public void setNotes(List<Note> notes) {
+        mNotes = notes;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        if (viewType == TaskNote.SIMPLE_TASK_ITEM) {
-//            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
-//            return new SimpleTaskViewHolder(v);
-//        }
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+        mContext = parent.getContext();
+        View v = LayoutInflater.from(mContext).inflate(R.layout.recycler_item, parent, false);
         return new NoteViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-//        if (mType == TaskNote.SIMPLE_TASK_ITEM)
-//            onBindSimpleTaskViewHolder((SimpleTaskViewHolder) viewHolder, position);
-//        else if (mType == TaskNote.LIST_TASK_ITEM)
         onBindListTaskViewHolder((NoteViewHolder) viewHolder, position);
     }
-
-//    private void onBindSimpleTaskViewHolder(SimpleTaskViewHolder holder, int position) {
-//        TaskNote note = mNotes.get(position);
-//        holder.mSimpleText.setText(note.getTaskContent());
-//    }
 
     private void onBindListTaskViewHolder(NoteViewHolder holder, final int position) {
         final int invertedPosition = getItemCount() - position - 1;
         final Note note = mNotes.get(invertedPosition);
-        holder.setTasks(mContext, note.getTasks());
+        holder.setTasks(mContext, note.getTasks(), mListener);
         holder.setTimers(note.getDeadline(), note.getReminder());
+        setListeners(holder, note);
+
+
+    }
+
+    public void setListeners(NoteViewHolder holder, final Note note){
         holder.setOnDeleteListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BusProvider.getBus().post(new NoteDeletedEvent(note.getId(), invertedPosition));
+                BusProvider.getBus().post(new NoteDeletedEvent(note.getId()));
             }
         });
+    }
 
+    public void setOnTaskInteractionListener(OnTaskInteractionListener listener){
+        mListener = listener;
     }
 
     @Override

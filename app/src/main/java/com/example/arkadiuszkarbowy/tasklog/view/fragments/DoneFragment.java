@@ -7,6 +7,7 @@ import com.example.arkadiuszkarbowy.tasklog.di.AndroidApplication;
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
 import com.example.arkadiuszkarbowy.tasklog.presenters.NotesDonePresenter;
 import com.example.arkadiuszkarbowy.tasklog.view.DoneView;
+import com.example.arkadiuszkarbowy.tasklog.view.adapters.RecyclerAdapter;
 
 import java.util.List;
 
@@ -16,6 +17,11 @@ public class DoneFragment extends TabFragment implements DoneView {
 
     @Inject
     NotesDonePresenter mNotesDonePresenter;
+    protected RecyclerAdapter mDoneAdapter;
+
+    public DoneFragment(){
+        mDoneAdapter = new RecyclerAdapter();
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -31,8 +37,13 @@ public class DoneFragment extends TabFragment implements DoneView {
 
     @Override
     public void setData(List<Note> notes) {
-        mData = notes;
+        mDoneAdapter.setNotes(notes);
         setUpRecyclerView();
+    }
+
+    @Override
+    public RecyclerAdapter getAdapter() {
+        return mDoneAdapter;
     }
 
     @Override

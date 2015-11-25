@@ -11,16 +11,19 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
 /**
  * Created by arkadiuszkarbowy on 16/11/15.
  */
-public class NotesTodoPresenter implements Presenter {
+public class NotesTodoPresenter implements TodoPresenter {
 
     private TodoView mView;
     private TasksDataSource mDataSource;
+    private List<Note> mData;
+
 
     @Inject
     public NotesTodoPresenter(TasksDataSource data) {
@@ -36,7 +39,8 @@ public class NotesTodoPresenter implements Presenter {
         mDataSource.open();
         ArrayList<Note> notes = mDataSource.getTodoNotes();
         mDataSource.close();
-        mView.setData(notes);
+        mData = notes;
+        mView.setData(mData);
     }
 
     @Subscribe
@@ -47,7 +51,8 @@ public class NotesTodoPresenter implements Presenter {
             mDataSource.open();
             Note note = mDataSource.createNote(event.taskEntries, event.deadlineCalendar, event.alarmCalendar);
             mDataSource.close();
-            mView.addNew(note);
+            mData.add(note);
+            mView.addNote();
         }
     }
 
@@ -67,13 +72,33 @@ public class NotesTodoPresenter implements Presenter {
         mDataSource.open();
         mDataSource.delete(event.id);
         mDataSource.close();
-        mView.remove(event.position);
+        int position = findMessagePositionById(event.id);
+        mData.remove(position);
+
+        mView.remove(position);
+    }
+
+    private int findMessagePositionById(long id) {
+        for (int i = 0; i < mData.size(); i++) {
+            if (mData.get(i).getId() == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void taskChecked(long id) {
+
+    }
+
+    @Override
+    public void taskUnchecked(long id) {
+
     }
 
     @Override
     public void onDestroy() {
         BusProvider.getBus().unregister(this);
     }
-
-
 }

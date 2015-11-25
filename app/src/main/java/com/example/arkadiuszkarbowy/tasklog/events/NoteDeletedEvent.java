@@ -5,9 +5,8 @@ package com.example.arkadiuszkarbowy.tasklog.events;
  */
 public class NoteDeletedEvent {
     public long id;
-    public int position;
-    public NoteDeletedEvent(long id, int position) {
+
+    public NoteDeletedEvent(long id) {
         this.id = id;
-        this.position = position;
     }
 }

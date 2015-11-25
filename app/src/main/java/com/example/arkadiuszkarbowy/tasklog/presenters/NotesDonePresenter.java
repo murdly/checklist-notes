@@ -15,6 +15,7 @@ public class NotesDonePresenter implements Presenter {
 
     private DoneView mView;
     private TasksDataSource mDataSource;
+    private List<Note> mData;
 
     @Inject
     public NotesDonePresenter(TasksDataSource data) {
@@ -31,7 +32,8 @@ public class NotesDonePresenter implements Presenter {
         mDataSource.open();
         List<Note> notes = mDataSource.getDoneTasks();
         mDataSource.close();
-        mView.setData(notes);
+        mData = notes;
+        mView.setData(mData);
     }
 
 

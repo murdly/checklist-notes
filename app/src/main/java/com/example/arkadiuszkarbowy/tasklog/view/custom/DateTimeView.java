@@ -46,7 +46,7 @@ public class DateTimeView extends RelativeLayout {
     @Bind(R.id.ic)
     ImageView mIcon;
 
-    private FragmentManager mFragmentManager; //todo inject
+    private FragmentManager mFragmentManager;
     private Calendar mCalendar;
     private SimpleDateFormat mDateFormat, mTimeFormat;
     private boolean isSet = false;

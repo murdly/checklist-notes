@@ -2,7 +2,6 @@ package com.example.arkadiuszkarbowy.tasklog.view.adapters.holders;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,6 +10,7 @@ import com.example.arkadiuszkarbowy.tasklog.R;
 import com.example.arkadiuszkarbowy.tasklog.data.Task;
 import com.example.arkadiuszkarbowy.tasklog.view.adapters.TaskListAdapter;
 import com.example.arkadiuszkarbowy.tasklog.view.custom.ExpandedListView;
+import com.example.arkadiuszkarbowy.tasklog.view.interactors.OnTaskInteractionListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by arkadiuszkarbowy on 18/11/15.
  */
-public class NoteViewHolder extends RecyclerView.ViewHolder {
+public class NoteViewHolder extends RecyclerView.ViewHolder{
 
     @Bind(R.id.list)
     ExpandedListView mList;
@@ -42,22 +42,26 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, view);
         mDeadlineHolder = new DateTimeViewHolder(mDeadlineLayout);
         mReminderHolder = new DateTimeViewHolder(mReminderLayout);
+
     }
 
-    public void setTasks(Context context, ArrayList<Task> tasks) {
-        mList.setAdapter(new TaskListAdapter(context, R.layout.task_list_item, tasks));
+    public void setTasks(Context context, ArrayList<Task> tasks, OnTaskInteractionListener
+            mListener) {
+        TaskListAdapter tasksAdapter = new TaskListAdapter(context, R.layout.task_list_item, tasks);
+        tasksAdapter.setOnTaskInteractionListener(mListener);
+        mList.setAdapter(tasksAdapter);
     }
 
-    public void setTimers(Date deadline, Date reminder){
+    public void setTimers(Date deadline, Date reminder) {
         boolean visible = deadline != null || reminder != null;
-            showContainer(visible);
+        showContainer(visible);
 
         setDeadline(deadline);
         setReminder(reminder);
     }
 
     private void showContainer(boolean visible) {
-        mContainer.setVisibility(visible ? View.VISIBLE :View.GONE);
+        mContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     private void setDeadline(Date deadline) {
