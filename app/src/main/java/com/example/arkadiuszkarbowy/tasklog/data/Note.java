@@ -28,8 +28,8 @@ public class Note {
         return type;
     } //todo sprawdzic czy wszystkie odhaczone
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(NoteType type) {
+        this.type = type.toString();
     }
 
     public Date getDeadline() {

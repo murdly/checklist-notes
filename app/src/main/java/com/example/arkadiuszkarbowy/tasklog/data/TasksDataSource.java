@@ -23,11 +23,8 @@ import javax.inject.Inject;
  */
 @PerApp
 public class TasksDataSource {
-    private static final String NOTE_TYPE_TODO = "todo";
-    private static final String NOTE_TYPE_DONE = "done";
     private SQLiteDatabase database;
     private SQLiteHelper dbHelper;
-
 
     @Inject
     public TasksDataSource(Context context) {
@@ -45,7 +42,7 @@ public class TasksDataSource {
     public Note createNote(LinkedHashMap<Integer, TaskRowLayout.Entry> entries, Calendar mDeadlineCalendar,
                            Calendar mAlarmCalendar) {
         ContentValues values = new ContentValues();
-        values.put(SQLiteHelper.COLUMN_TYPE, NOTE_TYPE_TODO);
+        values.put(SQLiteHelper.COLUMN_TYPE, NoteType.TODO.toString());
         values.put(SQLiteHelper.COLUMN_DEADLINE, Conversion.persistDate(mDeadlineCalendar));
         values.put(SQLiteHelper.COLUMN_REMINDER, Conversion.persistDate(mAlarmCalendar));
         long noteId = database.insert(SQLiteHelper.TABLE_NOTES, null,
@@ -69,7 +66,7 @@ public class TasksDataSource {
         note.setTasks(tasks);
         note.setDeadline(mDeadlineCalendar != null ? mDeadlineCalendar.getTime() : null);
         note.setReminder(mAlarmCalendar != null ? mAlarmCalendar.getTime() : null);
-        note.setType(NOTE_TYPE_TODO); //todo sprawdzic checki
+        note.setType(NoteType.TODO); //todo sprawdzic checki
 
         return note;
     }
@@ -83,7 +80,6 @@ public class TasksDataSource {
             values.put(SQLiteHelper.COLUMN_ISDONE, task.isDone() ? 1 : 0);
             database.insert(SQLiteHelper.TABLE_TASKS, null, values);
         }
-
     }
 
     public ArrayList<Note> getTodoNotes() {
@@ -91,7 +87,7 @@ public class TasksDataSource {
         String table = SQLiteHelper.TABLE_NOTES;
         String[] columns = SQLiteHelper.allColumnsNotes;
         String where = SQLiteHelper.COLUMN_TYPE + " = ?";
-        String[] args = {NOTE_TYPE_TODO};
+        String[] args = {NoteType.TODO.toString()};
 
         Cursor cursor = database.query(table, columns, where, args, null, null, null);
         Log.d("TaskDatSource", "getTodoNotes " + cursor.getCount());
@@ -141,7 +137,7 @@ public class TasksDataSource {
     private Note cursorToNote(Cursor cursor) {
         Note note = new Note();
         note.setId(cursor.getInt(cursor.getColumnIndex(SQLiteHelper.COLUMN_ID_NOTE)));
-        note.setType(cursor.getString(cursor.getColumnIndex(SQLiteHelper.COLUMN_TYPE)));
+        note.setType(NoteType.getTypeForString(cursor.getString(cursor.getColumnIndex(SQLiteHelper.COLUMN_TYPE))));
         note.setDeadline(Conversion.loadDate(cursor, cursor.getColumnIndex(SQLiteHelper.COLUMN_DEADLINE)));
         note.setReminder(Conversion.loadDate(cursor, cursor.getColumnIndex(SQLiteHelper.COLUMN_REMINDER)));
         return note;

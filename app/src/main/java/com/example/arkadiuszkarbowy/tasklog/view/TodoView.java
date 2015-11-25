@@ -18,4 +18,6 @@ public interface TodoView {
 
     void showToastBlankNote();
 
+    void showToastCompletedNote();
+
 }

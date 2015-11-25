@@ -56,7 +56,6 @@ public class TodoFragment extends TabFragment implements TodoView {
         @Override
         public void onUnchecked(long id) {
             mTodoPresenter.taskUnchecked(id);
-
         }
     };
 
@@ -94,6 +93,12 @@ public class TodoFragment extends TabFragment implements TodoView {
     }
 
     @Override
+    public void showToastCompletedNote() {
+        Toast.makeText(getActivity() , getResources().getString(R.string.complete), Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
     public RecyclerAdapter getAdapter() {
         return mTodoAdapter;
     }
@@ -104,5 +109,4 @@ public class TodoFragment extends TabFragment implements TodoView {
         BusProvider.getBus().unregister(this);
         mTodoPresenter.onDestroy();
     }
-
 }
