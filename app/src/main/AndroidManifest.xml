@@ -28,6 +28,8 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <service android:name=".notifications.ScheduleService"/>
+        <service android:name=".notifications.NotifyService"/>
     </application>
 
 </manifest>

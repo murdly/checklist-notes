@@ -1,4 +1,4 @@
-package com.example.arkadiuszkarbowy.tasklog.view.dialogs;
+package com.example.arkadiuszkarbowy.tasklog.view.fragments.dialogs;
 
 import android.app.Fragment;
 import android.os.Bundle;

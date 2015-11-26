@@ -8,7 +8,6 @@
                 android:paddingStart="16dp"
                 android:paddingTop="16dp">
 
-
     <com.example.arkadiuszkarbowy.tasklog.view.custom.LimitedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"

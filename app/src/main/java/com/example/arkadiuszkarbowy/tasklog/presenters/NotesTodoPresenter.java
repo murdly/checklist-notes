@@ -6,6 +6,8 @@ import com.example.arkadiuszkarbowy.tasklog.events.NoteCreatedEvent;
 import com.example.arkadiuszkarbowy.tasklog.events.NoteDeletedEvent;
 import com.example.arkadiuszkarbowy.tasklog.view.TodoView;
 import com.example.arkadiuszkarbowy.tasklog.view.custom.TaskRowLayout;
+import com.example.arkadiuszkarbowy.tasklog.view.interactors.OnSnackbarInteraction;
+import com.example.arkadiuszkarbowy.tasklog.view.interactors.SnackbarInteractor;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -21,10 +23,12 @@ public class NotesTodoPresenter implements TodoPresenter {
     private TodoView mView;
     private TasksDataSource mDataSource;
     private List<Note> mData;
+    private SnackbarInteractor mOnDelete;
 
     @Inject
     public NotesTodoPresenter(TasksDataSource data) {
         mDataSource = data;
+        mOnDelete = new SnackbarInteractor(mSnackbarInteractionFinished);
     }
 
     public void setView(TodoView view) {
@@ -50,7 +54,7 @@ public class NotesTodoPresenter implements TodoPresenter {
             Note note = mDataSource.createNote(event.taskEntries, event.deadlineCalendar, event.alarmCalendar);
             mDataSource.close();
             mData.add(note);
-            mView.addNote();
+            mView.addNote(0);
         }
     }
 
@@ -75,13 +79,11 @@ public class NotesTodoPresenter implements TodoPresenter {
 
     @Override
     public void noteDeleted(NoteDeletedEvent event) {
-        mDataSource.open();
-        mDataSource.delete(event.id);
-        mDataSource.close();
-
         int position = findNotePositionById(event.id);
-        mData.remove(position);
+        Note copy = mData.remove(position);
+        mOnDelete.saveNote(copy, position);
         mView.remove(position);
+        mView.showOnDeleteSnackbar(mOnDelete);
     }
 
     private int findNotePositionById(long id) {
@@ -91,6 +93,21 @@ public class NotesTodoPresenter implements TodoPresenter {
         }
         return -1;
     }
+
+    private OnSnackbarInteraction mSnackbarInteractionFinished = new OnSnackbarInteraction() {
+        @Override
+        public void restoreCopy(Note note, int currentLocation) {
+            mData.add(currentLocation, note);
+            mView.addNote(currentLocation);
+        }
+
+        @Override
+        public void deletePermanently(long id) {
+            mDataSource.open();
+            mDataSource.delete(id);
+            mDataSource.close();
+        }
+    };
 
     @Override
     public void taskChecked(long id) {

@@ -12,4 +12,8 @@
     <string name="time">godzina</string>
     <string name="blank">Pusta notatka nie została dodana.</string>
     <string name="complete">Zadnia wykonane - notatka nie została dodana.</string>
+    <string name="title">Nazwa</string>
+    <string name="delete_note">Notatka została usunięta.</string>
+    <string name="undo">Cofnij</string>
+    <string name="restore">Przywróć</string>
 </resources>

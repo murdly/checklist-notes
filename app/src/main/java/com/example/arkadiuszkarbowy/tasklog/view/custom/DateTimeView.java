@@ -6,7 +6,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -17,8 +16,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.arkadiuszkarbowy.tasklog.R;
-import com.example.arkadiuszkarbowy.tasklog.view.dialogs.DatePickerFragment;
-import com.example.arkadiuszkarbowy.tasklog.view.dialogs.TimePickerFragment;
+import com.example.arkadiuszkarbowy.tasklog.view.fragments.dialogs.DatePickerFragment;
+import com.example.arkadiuszkarbowy.tasklog.view.fragments.dialogs.TimePickerFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -79,7 +78,7 @@ public class DateTimeView extends RelativeLayout {
             a.recycle(); 
         }
     }
-
+//todo future dates only
     public void initialize(FragmentManager fm) {
         mFragmentManager = fm;
         mCalendar = Calendar.getInstance();
@@ -117,7 +116,7 @@ public class DateTimeView extends RelativeLayout {
         mDateTimeLayout.setVisibility(View.GONE);
         mSet.setVisibility(View.VISIBLE);
     }
-
+//todo if deadline is set : reminder < deadline
     private DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

@@ -1,8 +1,8 @@
 package com.example.arkadiuszkarbowy.tasklog.view.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.arkadiuszkarbowy.tasklog.R;
@@ -14,8 +14,9 @@ import com.example.arkadiuszkarbowy.tasklog.presenters.NotesTodoPresenter;
 import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
 import com.example.arkadiuszkarbowy.tasklog.view.TodoView;
 import com.example.arkadiuszkarbowy.tasklog.view.adapters.RecyclerAdapter;
-import com.example.arkadiuszkarbowy.tasklog.view.adapters.TaskListAdapter;
+import com.example.arkadiuszkarbowy.tasklog.view.interactors.SnackbarHolder;
 import com.example.arkadiuszkarbowy.tasklog.view.interactors.OnTaskInteractionListener;
+import com.example.arkadiuszkarbowy.tasklog.view.interactors.SnackbarInteractor;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -26,12 +27,18 @@ public class TodoFragment extends TabFragment implements TodoView {
 
     @Inject
     NotesTodoPresenter mTodoPresenter;
-    protected RecyclerAdapter mTodoAdapter;
+    private RecyclerAdapter mTodoAdapter;
+    private SnackbarHolder mSnackbarHolder;
 
     public TodoFragment(){
         mTodoAdapter = new RecyclerAdapter();
         BusProvider.getBus().register(this);
+    }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mSnackbarHolder = (SnackbarHolder) activity;
     }
 
     @Override
@@ -76,15 +83,20 @@ public class TodoFragment extends TabFragment implements TodoView {
     }
 
     @Override
-    public void addNote() {
+    public void addNote(int position) {
         mTodoAdapter.notifyDataSetChanged();
-        mRecyclerView.scrollToPosition(0);
+        mRecyclerView.scrollToPosition(position);
     }
 
     @Override
     public void remove(int position) {
         mTodoAdapter.notifyItemRemoved(position);
         mTodoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showOnDeleteSnackbar(SnackbarInteractor callback) {
+        mSnackbarHolder.onDeleteSnackbar(callback);
     }
 
     @Override
