@@ -10,9 +10,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.arkadiuszkarbowy.tasklog.R;
+import com.example.arkadiuszkarbowy.tasklog.events.ClearHistoryEvent;
+import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
 import com.example.arkadiuszkarbowy.tasklog.view.adapters.MyPagerAdapter;
 import com.example.arkadiuszkarbowy.tasklog.view.fragments.TabFragment;
 import com.example.arkadiuszkarbowy.tasklog.view.interactors.SnackbarHolder;
@@ -35,22 +39,26 @@ public class MainActivity extends AppCompatActivity implements SnackbarHolder {
     TabLayout mTabLayout;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.fab)
+    FloatingActionButton mFab;
+    @BindString(R.string.title_toolbar)
+    String mTitle;
     @BindString(R.string.todo)
     String mTodo;
     @BindString(R.string.done)
     String mDone;
+    @BindString(R.string.clear)
+    String mClear;
 
-    private TabFragment mTodoFragment, mDoneFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
+        setUpToolbar();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, CreateNoteDialogActivity.class);
@@ -61,15 +69,16 @@ public class MainActivity extends AppCompatActivity implements SnackbarHolder {
         initViewPagerAndTabs();
     }
 
-
     private void initViewPagerAndTabs() {
-        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        mTodoFragment = TabFragment.createInstance(TabFragment.TAB_TODO);
+        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager()); //todo inject
+        TabFragment mTodoFragment = TabFragment.createInstance(TabFragment.TAB_TODO);
+        TabFragment mDoneFragment = TabFragment.createInstance(TabFragment.TAB_DONE);
         pagerAdapter.addFragment(mTodoFragment, mTodo);
-        mDoneFragment = TabFragment.createInstance(TabFragment.TAB_DONE);
         pagerAdapter.addFragment(mDoneFragment, mDone);
         mViewPager.setAdapter(pagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.setOnTabSelectedListener(mTabSelectedListener);
     }
 
     @Override
@@ -87,5 +96,47 @@ public class MainActivity extends AppCompatActivity implements SnackbarHolder {
         return Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_LONG)
                 .setAction(action, interactor)
                 .setCallback(interactor);
+    }
+
+    private TabLayout.OnTabSelectedListener mTabSelectedListener = new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            mViewPager.setCurrentItem(tab.getPosition());
+            if (tab.getPosition() == 1) {
+                if (mToolbar.getMenu().size() == 0)
+                    mToolbar.inflateMenu(R.menu.menu_tab_done);
+            } else {
+                mToolbar.getMenu().clear();
+            }
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
+    };
+
+    private void setUpToolbar() {
+        mToolbar.setTitle(mTitle);
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getTitle().equals(mClear)) {
+                    BusProvider.getBus().post(new ClearHistoryEvent());
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 }

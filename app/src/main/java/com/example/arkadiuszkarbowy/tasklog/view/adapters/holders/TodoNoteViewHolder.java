@@ -25,7 +25,7 @@ import butterknife.OnClick;
 /**
  * Created by arkadiuszkarbowy on 18/11/15.
  */
-public class NoteViewHolder extends RecyclerView.ViewHolder{
+public class TodoNoteViewHolder extends RecyclerView.ViewHolder{
 
     @Bind(R.id.list)
     ExpandedListView mList;
@@ -41,7 +41,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder{
     private DateTimeViewHolder mDeadlineHolder;
     private DateTimeViewHolder mReminderHolder;
 
-    public NoteViewHolder(final View view) {
+    public TodoNoteViewHolder(final View view) {
         super(view);
         ButterKnife.bind(this, view);
         mDeadlineHolder = new DateTimeViewHolder(mDeadlineLayout);

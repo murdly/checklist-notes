@@ -1,9 +1,13 @@
 package com.example.arkadiuszkarbowy.tasklog.presenters;
 
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
+import com.example.arkadiuszkarbowy.tasklog.data.NoteType;
+import com.example.arkadiuszkarbowy.tasklog.data.Task;
 import com.example.arkadiuszkarbowy.tasklog.data.TasksDataSource;
 import com.example.arkadiuszkarbowy.tasklog.events.NoteCreatedEvent;
 import com.example.arkadiuszkarbowy.tasklog.events.NoteDeletedEvent;
+import com.example.arkadiuszkarbowy.tasklog.events.NoteDoneEvent;
+import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
 import com.example.arkadiuszkarbowy.tasklog.view.TodoView;
 import com.example.arkadiuszkarbowy.tasklog.view.custom.TaskRowLayout;
 import com.example.arkadiuszkarbowy.tasklog.view.interactors.OnSnackbarInteraction;
@@ -86,14 +90,6 @@ public class NotesTodoPresenter implements TodoPresenter {
         mView.showOnDeleteSnackbar(mOnDelete);
     }
 
-    private int findNotePositionById(long id) {
-        for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).getId() == id)
-                return i;
-        }
-        return -1;
-    }
-
     private OnSnackbarInteraction mSnackbarInteractionFinished = new OnSnackbarInteraction() {
         @Override
         public void restoreCopy(Note note, int currentLocation) {
@@ -106,21 +102,77 @@ public class NotesTodoPresenter implements TodoPresenter {
             mDataSource.open();
             mDataSource.delete(id);
             mDataSource.close();
+            //todo cancel notification
         }
     };
 
     @Override
-    public void taskChecked(long id) {
+    public void taskUnchecked(long taskId) {
         mDataSource.open();
-        mDataSource.updateTaskDone(id);
+        long noteId = mDataSource.setTaskTodo(taskId);
         mDataSource.close();
+
+        updateData(noteId, taskId, true);
     }
 
     @Override
-    public void taskUnchecked(long id) {
+    public void taskChecked(long taskId) {
         mDataSource.open();
-        mDataSource.updateTaskTodo(id);
+        long noteId = mDataSource.setTaskDone(taskId);
         mDataSource.close();
+
+        updateData(noteId, taskId, true);
+        markNoteAsDoneIfComplete(noteId);
+    }
+
+    private void updateData(long noteId, long taskId, boolean isDone) {
+        int notePosition = findNotePositionById(noteId);
+        int taskPos = findTaskPositionById(notePosition, taskId);
+        mData.get(notePosition).getTasks().get(taskPos).setIsDone(isDone);
+    }
+
+    private void markNoteAsDoneIfComplete(long noteId) {
+        int position = findNotePositionById(noteId);
+        Note note = mData.get(position);
+
+        if(areTasksDone(note)){
+            mDataSource.open();
+            mDataSource.setNoteDone(noteId);
+            mDataSource.close();
+
+            mData.remove(position);
+            note.setType(NoteType.DONE);
+            mView.remove(position);
+            mView.showToastNoteDone();
+            BusProvider.getBus().post(new NoteDoneEvent(note));
+        }
+    }
+
+    private boolean areTasksDone(Note note) {
+        for (Task t : note.getTasks()) {
+            if (!t.isDone())
+                return false;
+        }
+
+        return true;
+    }
+
+    private int findNotePositionById(long id) {
+        for (int i = 0; i < mData.size(); i++) {
+            if (mData.get(i).getId() == id)
+                return i;
+        }
+        return -1;
+    }
+
+    private int findTaskPositionById(int notePosition, long taskId) {
+        Note note = mData.get(notePosition);
+        List<Task> tasks = note.getTasks();
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId() == taskId)
+                return i;
+        }
+        return -1;
     }
 
     @Override
