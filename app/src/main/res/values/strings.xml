@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TaskLog</string>
-    <string name="title_activity_main2">Dziennik zadań</string>
+    <string name="title_toolbar">Dziennik zadań</string>
     <string name="todo">Do zrobienia</string>
     <string name="done">Zrobione</string>
     <string name="empty">Brak zadań</string>
@@ -12,8 +12,11 @@
     <string name="time">godzina</string>
     <string name="blank">Pusta notatka nie została dodana.</string>
     <string name="complete">Zadnia wykonane - notatka nie została dodana.</string>
-    <string name="title">Nazwa</string>
     <string name="delete_note">Notatka została usunięta.</string>
     <string name="undo">Cofnij</string>
     <string name="restore">Przywróć</string>
+    <string name="note_done">Notatka przeniosiona do zakładki \'Zrobione\'.</string>
+    <string name="clear">Wyczyść</string>
+    <string name="notification_title">Przypomnienie</string>
+    <string name="notification_text">Sprawdź zadania.</string>
 </resources>

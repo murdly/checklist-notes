@@ -66,7 +66,7 @@ public class TasksDataSource {
         note.setTasks(tasks);
         note.setDeadline(mDeadlineCalendar != null ? mDeadlineCalendar.getTime() : null);
         note.setReminder(mAlarmCalendar != null ? mAlarmCalendar.getTime() : null);
-        note.setType(NoteType.TODO); //todo sprawdzic checki
+        note.setType(NoteType.TODO);
 
         return note;
     }
@@ -83,7 +83,6 @@ public class TasksDataSource {
     }
 
     public ArrayList<Note> getTodoNotes() {
-
         String table = SQLiteHelper.TABLE_NOTES;
         String[] columns = SQLiteHelper.allColumnsNotes;
         String where = SQLiteHelper.COLUMN_TYPE + " = ?";
@@ -130,7 +129,6 @@ public class TasksDataSource {
         int isDone = cursor.getInt(cursor.getColumnIndex(SQLiteHelper.COLUMN_ISDONE));
         task.setIsDone(isDone == 1);
         task.setText(cursor.getString(cursor.getColumnIndex(SQLiteHelper.COLUMN_TEXT)));
-        Log.d("cursorToTask()", task.getText() + "-id: " + task.getId() + " -isDone: " + task.isDone());
         return task;
     }
 
@@ -143,11 +141,16 @@ public class TasksDataSource {
         return note;
     }
 
-    public List<Note> getDoneTasks() {
+    public List<Note> getDoneNotes() {
+        String table = SQLiteHelper.TABLE_NOTES;
+        String[] columns = SQLiteHelper.allColumnsNotes;
+        String where = SQLiteHelper.COLUMN_TYPE + " = ?";
+        String[] args = {NoteType.DONE.toString()};
 
-        Log.d("TaskDatSource", "getDoneTasks");
+        Cursor cursor = database.query(table, columns, where, args, null, null, null);
+        Log.d("TaskDatSource", "getDoneNotes " + cursor.getCount());
 
-        return new ArrayList<>();
+        return cursorToNoteList(cursor);
     }
 
     public void delete(long id) {
@@ -167,26 +170,48 @@ public class TasksDataSource {
         values.put(SQLiteHelper.COLUMN_FRID_NOTE, testNoteId);
         values.put(SQLiteHelper.COLUMN_TEXT, "test");
         values.put(SQLiteHelper.COLUMN_ISDONE, -1);
-        long lastId =  database.insert(SQLiteHelper.TABLE_TASKS, null, values);
+        long lastId = database.insert(SQLiteHelper.TABLE_TASKS, null, values);
         this.delete(testNoteId);
         return lastId + 1;
     }
 
-    public void updateTaskDone(long id) {
-        updateTask(id, 1);
+    public long setTaskDone(long id) {
+        return updateTask(id, 1);
     }
 
-    public void updateTaskTodo(long id) {
-        updateTask(id, 0);
+    public long setTaskTodo(long id) {
+        return updateTask(id, 0);
     }
 
-    private void updateTask(long id, int isDone) {
+    private long updateTask(long id, int isDone) {
         String where = SQLiteHelper.COLUMN_ID_TASK + " = " + id;
         ContentValues args = new ContentValues();
         args.put(SQLiteHelper.COLUMN_ISDONE, isDone);
         database.update(SQLiteHelper.TABLE_TASKS, args, where, null);
 
-        Log.d("TaskDataSource", "updateTask() id: " + id + " isDOne: " + isDone);
+        return getNoteIdForTask(id);
+    }
 
+    private long getNoteIdForTask(long id) {
+        String where = SQLiteHelper.COLUMN_ID_TASK + " = " + id;
+
+        Cursor cursor = database.query(SQLiteHelper.TABLE_TASKS, new String[]{SQLiteHelper.COLUMN_FRID_NOTE},
+                where, null, null, null, null, null);
+
+        return cursor.moveToFirst() ? cursor.getLong(cursor.getColumnIndex(SQLiteHelper.COLUMN_FRID_NOTE))
+                : -1;
+    }
+
+    public void setNoteDone(long noteId) {
+        String where = SQLiteHelper.COLUMN_ID_NOTE + " = " + noteId;
+        ContentValues args = new ContentValues();
+        args.put(SQLiteHelper.COLUMN_TYPE, NoteType.DONE.toString());
+        database.update(SQLiteHelper.TABLE_NOTES, args, where, null);
+    }
+
+    public void clearDoneNotes() {
+        List<Note> doneNotes = getDoneNotes();
+        for(Note n : doneNotes)
+            delete(n.getId());
     }
 }

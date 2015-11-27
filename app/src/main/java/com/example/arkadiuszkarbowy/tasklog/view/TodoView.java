@@ -23,4 +23,5 @@ public interface TodoView {
 
     void showOnDeleteSnackbar(SnackbarInteractor callback);
 
+    void showToastNoteDone();
 }

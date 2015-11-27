@@ -2,23 +2,16 @@ package com.example.arkadiuszkarbowy.tasklog.view.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.arkadiuszkarbowy.tasklog.R;
-import com.example.arkadiuszkarbowy.tasklog.view.adapters.RecyclerAdapter;
-import com.example.arkadiuszkarbowy.tasklog.data.Note;
+import com.example.arkadiuszkarbowy.tasklog.view.adapters.BaseRecyclerAdapter;
+import com.example.arkadiuszkarbowy.tasklog.view.adapters.TodoRecyclerAdapter;
 import com.example.arkadiuszkarbowy.tasklog.view.custom.EmptyStateRecycler;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,7 +42,7 @@ public abstract class TabFragment extends Fragment {
         return tabFragment;
     }
 
-    public abstract RecyclerAdapter getAdapter();
+    public abstract BaseRecyclerAdapter getAdapter();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

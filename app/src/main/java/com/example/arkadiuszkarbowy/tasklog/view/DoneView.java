@@ -10,4 +10,8 @@ import java.util.List;
 public interface DoneView {
 
     void setData(List<Note> notes);
+
+    void addNote(int position);
+
+    void clearNotes();
 }

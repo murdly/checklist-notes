@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.activities.MainActivity"
-            android:label="@string/title_activity_main2"
+            android:label="@string/title_toolbar"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>

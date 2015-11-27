@@ -13,7 +13,7 @@ import com.example.arkadiuszkarbowy.tasklog.events.NoteDeletedEvent;
 import com.example.arkadiuszkarbowy.tasklog.presenters.NotesTodoPresenter;
 import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
 import com.example.arkadiuszkarbowy.tasklog.view.TodoView;
-import com.example.arkadiuszkarbowy.tasklog.view.adapters.RecyclerAdapter;
+import com.example.arkadiuszkarbowy.tasklog.view.adapters.TodoRecyclerAdapter;
 import com.example.arkadiuszkarbowy.tasklog.view.interactors.SnackbarHolder;
 import com.example.arkadiuszkarbowy.tasklog.view.interactors.OnTaskInteractionListener;
 import com.example.arkadiuszkarbowy.tasklog.view.interactors.SnackbarInteractor;
@@ -27,11 +27,11 @@ public class TodoFragment extends TabFragment implements TodoView {
 
     @Inject
     NotesTodoPresenter mTodoPresenter;
-    private RecyclerAdapter mTodoAdapter;
+    private TodoRecyclerAdapter mTodoAdapter;
     private SnackbarHolder mSnackbarHolder;
 
     public TodoFragment(){
-        mTodoAdapter = new RecyclerAdapter();
+        mTodoAdapter = new TodoRecyclerAdapter();
         BusProvider.getBus().register(this);
     }
 
@@ -111,7 +111,13 @@ public class TodoFragment extends TabFragment implements TodoView {
     }
 
     @Override
-    public RecyclerAdapter getAdapter() {
+    public void showToastNoteDone() {
+        Toast.makeText(getActivity() , getResources().getString(R.string.note_done), Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public TodoRecyclerAdapter getAdapter() {
         return mTodoAdapter;
     }
 

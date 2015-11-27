@@ -5,9 +5,14 @@ import android.support.annotation.Nullable;
 
 import com.example.arkadiuszkarbowy.tasklog.di.AndroidApplication;
 import com.example.arkadiuszkarbowy.tasklog.data.Note;
+import com.example.arkadiuszkarbowy.tasklog.events.ClearHistoryEvent;
+import com.example.arkadiuszkarbowy.tasklog.events.NoteDoneEvent;
 import com.example.arkadiuszkarbowy.tasklog.presenters.NotesDonePresenter;
+import com.example.arkadiuszkarbowy.tasklog.util.BusProvider;
 import com.example.arkadiuszkarbowy.tasklog.view.DoneView;
-import com.example.arkadiuszkarbowy.tasklog.view.adapters.RecyclerAdapter;
+import com.example.arkadiuszkarbowy.tasklog.view.adapters.DoneRecyclerAdapter;
+import com.example.arkadiuszkarbowy.tasklog.view.adapters.TodoRecyclerAdapter;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -16,11 +21,12 @@ import javax.inject.Inject;
 public class DoneFragment extends TabFragment implements DoneView {
 
     @Inject
-    NotesDonePresenter mNotesDonePresenter;
-    protected RecyclerAdapter mDoneAdapter;
+    NotesDonePresenter mDonePresenter;
+    protected DoneRecyclerAdapter mDoneAdapter;
 
     public DoneFragment(){
-        mDoneAdapter = new RecyclerAdapter();
+        mDoneAdapter = new DoneRecyclerAdapter();
+        BusProvider.getBus().register(this);
     }
 
     @Override
@@ -31,8 +37,9 @@ public class DoneFragment extends TabFragment implements DoneView {
 
     private void initialize() {
         AndroidApplication.getComponent(getActivity()).inject(this);
-        mNotesDonePresenter.setView(this);
-        mNotesDonePresenter.loadDoneList();
+        mDonePresenter.setView(this);
+        mDonePresenter.loadDoneList();
+        mDoneAdapter.setOnTaskInteractionListener(null);
     }
 
     @Override
@@ -41,14 +48,36 @@ public class DoneFragment extends TabFragment implements DoneView {
         setUpRecyclerView();
     }
 
+    @Subscribe
+    public void noteDone(NoteDoneEvent event){
+        mDonePresenter.noteDone(event);
+    }
+
+    @Subscribe
+    public void clearDoneNotes(ClearHistoryEvent event){
+        mDonePresenter.clearDoneNotes();
+    }
+
     @Override
-    public RecyclerAdapter getAdapter() {
+    public void addNote(int position) {
+        mDoneAdapter.notifyDataSetChanged();
+        mRecyclerView.scrollToPosition(position);
+    }
+
+    @Override
+    public void clearNotes() {
+        mDoneAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public DoneRecyclerAdapter getAdapter() {
         return mDoneAdapter;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mNotesDonePresenter.onDestroy();
+        BusProvider.getBus().unregister(this);
+        mDonePresenter.onDestroy();
     }
 }

@@ -55,9 +55,9 @@ public class NotifyService extends Service {
 
 
     private void showNotification() {
-        CharSequence title = "Alarm!!";
+        CharSequence title = getString(R.string.notification_title);
         int icon = R.mipmap.ic_launcher;
-        CharSequence text = "Your notification time is upon us.";
+        CharSequence text = getString(R.string.notification_text);
 
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -68,12 +68,10 @@ public class NotifyService extends Service {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(icon)
-                .setTicker("Hearty365")
                 .setContentTitle(title)
                 .setContentText(text)
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
-                .setContentIntent(contentIntent)
-                .setContentInfo("Info");
+                .setContentIntent(contentIntent);
 
         mNotificationManager.notify(NOTIFICATION, notification.build());
 

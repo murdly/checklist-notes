@@ -51,15 +51,20 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
     }
 
     private void setListeners(final TaskViewHolder holder, final long taskId) {
-        holder.mBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.mBox.isChecked())
-                    mTaskInteractionListener.onChecked(taskId);
-                else
-                    mTaskInteractionListener.onUnchecked(taskId);
-            }
-        });
+        if (mTaskInteractionListener == null) {
+            holder.mBox.setEnabled(false);
+        } else {
+
+            holder.mBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (holder.mBox.isChecked())
+                        mTaskInteractionListener.onChecked(taskId);
+                    else
+                        mTaskInteractionListener.onUnchecked(taskId);
+                }
+            });
+        }
     }
 
     public void setOnTaskInteractionListener(OnTaskInteractionListener listener) {
